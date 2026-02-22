@@ -1,0 +1,1699 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandCraft ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{
+            --pd:#6C3483; --pm:#9B59B6; --pl:#c39bd3;
+            --peach:#fdebd0; --lav:#e8daef; --sky:#d6eaf8;
+            --glass:rgba(255,255,255,0.93); --shadow:0 35px 80px rgba(0,0,0,0.17);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Quicksand',sans-serif;background:linear-gradient(135deg,var(--peach),var(--lav),var(--sky));min-height:100vh;overflow:hidden;position:relative;}
+
+        @keyframes sparkle{0%,100%{opacity:.15;transform:scale(1) rotate(0deg)}50%{opacity:1;transform:scale(1.8) rotate(180deg)}}
+        @keyframes shoot{0%{transform:translateX(110vw) translateY(-5vh) rotate(-42deg);opacity:1}100%{transform:translateX(-10vw) translateY(110vh) rotate(-42deg);opacity:0}}
+        @keyframes floatit{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes glowPulse{0%,100%{box-shadow:0 20px 45px rgba(108,52,131,.4)}50%{box-shadow:0 30px 65px rgba(108,52,131,.65)}}
+        @keyframes shimBar{0%{background-position:0 0}100%{background-position:200% 0}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes shakIt{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+        @keyframes popLogo{0%{opacity:0;transform:scale(.4) rotate(-12deg)}65%{transform:scale(1.1) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pulseSbar{0%,100%{box-shadow:0 18px 42px rgba(0,0,0,.12)}50%{box-shadow:0 18px 42px rgba(195,155,211,.35)}}
+        @keyframes scanLine{0%{top:0%}100%{top:100%}}
+        @keyframes ripple{0%{transform:scale(0);opacity:1}100%{transform:scale(4);opacity:0}}
+        @keyframes barFill{from{width:0}to{width:var(--w)}}
+        @keyframes resultAppear{0%{opacity:0;transform:scale(.92) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+        @keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+        @keyframes cursorFade{0%{transform:scale(1);opacity:1}100%{transform:scale(0) translateY(-20px);opacity:0}}
+        @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+        @keyframes noteFly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(.5) rotate(20deg)}}
+
+        .spark{position:absolute;width:7px;height:7px;background:#FFD700;border-radius:50%;animation:sparkle 3s ease-in-out infinite;box-shadow:0 0 14px #FFD700;pointer-events:none;z-index:0;}
+        .spark::before{content:'';position:absolute;top:50%;left:50%;width:3px;height:18px;background:#FFD700;transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 7px #FFD700;}
+        .shootStar{position:absolute;width:3px;height:3px;background:#FFD700;border-radius:50%;animation:shoot 7s linear infinite;box-shadow:0 0 22px #FFD700;pointer-events:none;z-index:0;}
+        .shootStar::after{content:'';position:absolute;left:-40px;top:0;width:90px;height:3px;background:linear-gradient(90deg,transparent,#FFD700,transparent);transform:rotate(-42deg);}
+        .floatWord{position:absolute;font-family:'Sacramento',cursive;font-size:18px;color:#5b4b6b;animation:floatit 7s ease-in-out infinite;text-shadow:0 2px 10px rgba(0,0,0,.1);pointer-events:none;z-index:0;}
+
+        /* LOGIN */
+        #loginScreen{position:fixed;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--peach),var(--lav),var(--sky));transition:opacity .6s ease,visibility .6s ease;}
+        #loginScreen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+        .lcard{width:min(470px,92vw);background:var(--glass);backdrop-filter:blur(28px);border-radius:38px;padding:56px 50px;text-align:center;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45);position:relative;overflow:hidden;animation:slideUp .75s ease-out;transform-style:preserve-3d;will-change:transform;}
+        .lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--pl),var(--pm),var(--pd),var(--pm),var(--pl));background-size:200% 100%;animation:shimBar 2.8s linear infinite;}
+        .lLogoBox{width:85px;height:85px;margin:0 auto 20px;background:linear-gradient(135deg,var(--pd),var(--pm));border-radius:24px;display:flex;align-items:center;justify-content:center;font-family:'Sacramento',cursive;font-size:36px;color:white;animation:glowPulse 2s infinite;}
+        .lcard h1{font-family:'Sacramento',cursive;font-size:50px;margin-bottom:5px;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .lcard .lsub{color:#6B7280;font-size:15px;margin-bottom:30px;font-weight:500;}
+        .alertBox{padding:11px 16px;border-radius:12px;font-size:13px;font-weight:700;text-align:center;margin-bottom:14px;display:none;}
+        .alertBox.err{background:rgba(252,129,129,.13);border:1.5px solid rgba(252,129,129,.4);color:#C0392B;}
+        .alertBox.ok{background:rgba(72,187,120,.13);border:1.5px solid rgba(72,187,120,.4);color:#1E8449;}
+        .alertBox.vis{display:block;animation:fadeUp .3s ease;}
+        .fg{margin-bottom:18px;text-align:left;}
+        .fg label{display:block;font-weight:700;color:#5B4B6B;font-size:13.5px;margin-bottom:8px;}
+        .iw{position:relative;}
+        .iw .ico{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:var(--pl);font-size:14px;pointer-events:none;}
+        .iw input{width:100%;padding:16px 18px 16px 44px;border:2px solid rgba(195,155,211,.3);border-radius:20px;font-size:15px;font-family:'Quicksand',sans-serif;background:rgba(255,255,255,.9);color:#2d3748;transition:all .35s;box-shadow:0 5px 18px rgba(0,0,0,.07);}
+        .iw input:focus{outline:none;border-color:var(--pl);box-shadow:0 0 0 5px rgba(195,155,211,.22);transform:translateY(-2px);background:#fff;}
+        .iw input.bad{border-color:#FC8181;animation:shakIt .4s ease;}
+        .ptoggle{position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--pl);font-size:14px;}
+        .lrow{display:flex;justify-content:space-between;align-items:center;margin:4px 0 22px;}
+        .remRow{display:flex;align-items:center;gap:7px;font-size:13px;color:#6B7280;cursor:pointer;}
+        .remRow input{accent-color:var(--pm);width:15px;height:15px;}
+        .fgtLink{font-size:13px;color:var(--pm);font-weight:700;cursor:pointer;}
+        .fgtLink:hover{color:var(--pd);text-decoration:underline;}
+        .loginBtn{width:100%;padding:18px;border:none;border-radius:26px;background:linear-gradient(135deg,var(--pl),#af7ac5);color:#fff;font-size:17px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;position:relative;overflow:hidden;transition:all .4s;box-shadow:0 15px 38px rgba(195,155,211,.42);}
+        .loginBtn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transition:left .5s;}
+        .loginBtn:hover::before{left:100%;}
+        .loginBtn:hover{transform:translateY(-4px);background:linear-gradient(135deg,var(--pd),var(--pm));box-shadow:0 25px 52px rgba(195,155,211,.5);}
+        .loginBtn.loading{pointer-events:none;}
+        .loginBtn.loading .btnTxt{opacity:0;}
+        .loginBtn.loading::after{content:'';position:absolute;top:50%;left:50%;width:21px;height:21px;margin:-10.5px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+        .orDiv{display:flex;align-items:center;gap:12px;margin:18px 0;}
+        .orDiv::before,.orDiv::after{content:'';flex:1;height:1px;background:rgba(195,155,211,.35);}
+        .orDiv span{color:#9CA3AF;font-size:13px;}
+        .socBtns{display:flex;gap:10px;}
+        .socBtn{flex:1;padding:13px 8px;border:2px solid rgba(195,155,211,.3);border-radius:16px;background:rgba(255,255,255,.95);cursor:pointer;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;color:#5B4B6B;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .3s;position:relative;overflow:hidden;}
+        .socBtn:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.14);background:#fff;}
+        .socBtn--google:hover{border-color:#EA4335;color:#EA4335;}
+        .socBtn--apple{color:#1a1a1a;}
+        .socBtn--apple:hover{border-color:#1a1a1a;color:#1a1a1a;}
+        .socBtn--fb:hover{border-color:#1877F2;color:#1877F2;}
+        .signupLine{margin-top:18px;font-size:14px;color:#6B7280;}
+        .signupLine a{color:var(--pm);font-weight:700;cursor:pointer;}
+        .demoHint{margin-top:14px;padding:10px 15px;background:rgba(195,155,211,.13);border-radius:12px;font-size:12px;color:#7B5EA7;border:1px dashed rgba(195,155,211,.5);}
+
+        /* APP */
+        #app{opacity:0;pointer-events:none;transition:opacity .65s;}
+        #app.on{opacity:1;pointer-events:all;}
+
+        /* NAVBAR */
+        .navbar{position:fixed;top:22px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.88);backdrop-filter:blur(22px);padding:12px 22px;border-radius:50px;box-shadow:0 20px 48px rgba(0,0,0,.14);display:flex;gap:8px;z-index:800;align-items:center;border:1px solid rgba(255,255,255,.35);}
+        .nbtn{padding:10px 16px;border:none;border-radius:28px;background:linear-gradient(135deg,var(--pl),#af7ac5);color:#fff;font-weight:700;font-size:12.5px;font-family:'Quicksand',sans-serif;cursor:pointer;position:relative;overflow:hidden;transition:all .4s;}
+        .nbtn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .5s;}
+        .nbtn:hover::before{left:100%;}
+        .nbtn.active,.nbtn:hover{background:linear-gradient(135deg,var(--pd),var(--pm));transform:translateY(-3px);box-shadow:0 16px 36px rgba(195,155,211,.4);}
+        .userBadge{display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;background:rgba(108,52,131,.08);border-radius:30px;border:1px solid rgba(195,155,211,.3);}
+        .uAvatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pd),var(--pm));display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700;}
+        .uName{font-size:13px;color:#5B4B6B;font-weight:700;}
+        .logoutBtn{padding:9px 16px;border:2px solid rgba(195,155,211,.45);border-radius:26px;background:transparent;color:var(--pm);font-weight:700;font-size:13px;font-family:'Quicksand',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .3s;}
+        .logoutBtn:hover{background:rgba(252,129,129,.1);border-color:#e74c3c;color:#e74c3c;transform:translateY(-2px);}
+
+        .page{position:fixed;inset:0;opacity:0;visibility:hidden;transition:all .55s;overflow-y:auto;padding-top:88px;}
+        .page.active{opacity:1;visibility:visible;}
+
+        /* GENERATOR */
+        .genWrap{max-width:680px;margin:28px auto 70px;padding:0 18px;}
+        .genCard{background:var(--glass);backdrop-filter:blur(26px);padding:50px;border-radius:38px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45);animation:slideUp .75s ease-out;}
+        .genHead{text-align:center;margin-bottom:36px;}
+        .genLogoBox{width:88px;height:88px;margin:0 auto 16px;background:linear-gradient(135deg,var(--pd),var(--pm));border-radius:24px;display:flex;align-items:center;justify-content:center;font-family:'Sacramento',cursive;font-size:36px;color:#fff;animation:glowPulse 2s infinite;cursor:pointer;}
+        .genHead h1{font-family:'Sacramento',cursive;font-size:50px;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .genHead p{color:#6B7280;font-size:16px;margin-top:6px;font-weight:500;}
+        .fgroup{margin-bottom:20px;}
+        .fgroup label{display:block;font-weight:700;color:#5B4B6B;font-size:13.5px;margin-bottom:8px;}
+        .fgroup input,.fgroup select,.fgroup textarea{width:100%;padding:17px 19px;border:2px solid rgba(195,155,211,.3);border-radius:20px;font-size:15px;font-family:'Quicksand',sans-serif;background:rgba(255,255,255,.9);color:#2d3748;transition:all .35s;box-shadow:0 5px 18px rgba(0,0,0,.07);}
+        .fgroup textarea{resize:vertical;min-height:80px;}
+        .fgroup input:focus,.fgroup select:focus,.fgroup textarea:focus{outline:none;border-color:var(--pl);box-shadow:0 0 0 5px rgba(195,155,211,.22);transform:translateY(-2px);background:#fff;}
+        .frow{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+        .genBtn{width:100%;padding:21px;border:none;border-radius:28px;background:linear-gradient(135deg,var(--pl),#af7ac5);color:#fff;font-size:18px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;position:relative;overflow:hidden;transition:all .4s;box-shadow:0 16px 40px rgba(195,155,211,.42);margin-top:16px;}
+        .genBtn .starEmoji{position:absolute;left:-50px;top:50%;transform:translateY(-50%);font-size:20px;transition:left .4s;}
+        .genBtn:hover{transform:translateY(-5px);background:linear-gradient(135deg,var(--pd),var(--pm));box-shadow:0 26px 54px rgba(195,155,211,.5);}
+        .genBtn:hover .starEmoji{left:20px;}
+        .genBtn.loading{pointer-events:none;}
+        .genBtn.loading .genBtnTxt{opacity:0;}
+        .genBtn.loading::after{content:'';position:absolute;top:50%;left:50%;width:24px;height:24px;margin:-12px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+
+        /* LOGO TYPE SELECTOR */
+        .logoTypeRow{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+        .logoTypeBtn{flex:1;min-width:120px;padding:12px 10px;border:2px solid rgba(195,155,211,.35);border-radius:16px;background:rgba(255,255,255,.8);cursor:pointer;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;color:#5B4B6B;text-align:center;transition:all .3s;}
+        .logoTypeBtn:hover{border-color:var(--pl);transform:translateY(-2px);}
+        .logoTypeBtn.sel{border-color:var(--pm);background:linear-gradient(135deg,rgba(155,89,182,.12),rgba(108,52,131,.08));color:var(--pd);}
+        .logoTypeBtn .ltIcon{font-size:22px;display:block;margin-bottom:4px;}
+
+        .resultBox{margin-top:28px;padding:30px;background:linear-gradient(135deg,rgba(108,52,131,.07),rgba(155,89,182,.07));border-radius:26px;border:2px solid rgba(195,155,211,.35);display:none;text-align:center;}
+        .resultBox.show{display:block;animation:fadeUp .55s ease;}
+        .resultBox h3{font-family:'Sacramento',cursive;font-size:28px;color:var(--pd);margin-bottom:18px;}
+        .svgHolder{display:flex;justify-content:center;margin-bottom:16px;}
+        .svgHolder svg,.svgHolder canvas{animation:popLogo .85s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 15px 38px rgba(108,52,131,.35));}
+        .brandTagline{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--pm);margin-bottom:12px;}
+        .tagsRow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
+        .tagChip{padding:5px 14px;background:rgba(195,155,211,.22);border-radius:20px;font-size:13px;color:var(--pd);font-weight:700;}
+
+        /* CUSTOM LOGO PRICING CARD */
+        .pricingCard{margin-top:20px;padding:22px 24px;background:linear-gradient(135deg,rgba(108,52,131,.1),rgba(241,196,15,.08));border-radius:20px;border:2px solid rgba(195,155,211,.4);text-align:center;}
+        .pricingCard h4{font-family:'Playfair Display',serif;font-size:19px;color:var(--pd);margin-bottom:8px;}
+        .pricingCard .price{font-size:38px;font-weight:700;background:linear-gradient(135deg,var(--pd),#F39C12);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:8px 0;}
+        .pricingCard .priceNote{font-size:13px;color:#718096;margin-bottom:14px;}
+        .pricingCard .priceFeats{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:16px;}
+        .pricingCard .pFeat{padding:4px 12px;background:rgba(255,255,255,.7);border-radius:20px;font-size:12px;color:#2d3748;font-weight:700;border:1px solid rgba(195,155,211,.3);}
+        .buyLogoBtn{padding:14px 32px;border:none;border-radius:22px;background:linear-gradient(135deg,#F39C12,#D35400);color:#fff;font-size:16px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;transition:all .35s;box-shadow:0 12px 30px rgba(243,156,18,.35);}
+        .buyLogoBtn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(243,156,18,.5);}
+
+        /* PORTAL */
+        .portalWrap{max-width:1380px;margin:28px auto 70px;padding:0 22px;}
+        .secHeader{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--pd);margin:32px 0 16px;padding-bottom:10px;border-bottom:2px solid rgba(195,155,211,.35);display:flex;align-items:center;gap:10px;}
+        .secHeader .badge{font-family:'Quicksand',sans-serif;font-size:12px;background:var(--pm);color:#fff;padding:3px 11px;border-radius:20px;font-weight:700;}
+        .brandGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:22px;margin-bottom:10px;}
+        .bCard{background:var(--glass);border-radius:24px;padding:26px 16px;text-align:center;cursor:pointer;transition:all .4s cubic-bezier(.25,.46,.45,.94);box-shadow:0 14px 36px rgba(0,0,0,.1);border:1.5px solid rgba(255,255,255,.55);position:relative;overflow:hidden;min-height:185px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+        .bCard::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--pl),var(--pm),var(--pl));transform:scaleX(0);transition:transform .4s;}
+        .bCard:hover::before{transform:scaleX(1);}
+        .bCard:hover{transform:translateY(-12px) scale(1.02);box-shadow:0 32px 66px rgba(0,0,0,.2);}
+        .bCard .bName{font-size:17px;font-weight:700;color:#2d3748;margin-top:11px;}
+        .bCard .bStyle{font-size:12px;color:var(--pd);font-weight:700;margin-top:4px;}
+        .bCard .bInd{font-size:12px;color:#718096;margin-top:3px;}
+        .emptyState{grid-column:1/-1;text-align:center;padding:50px 20px;color:#9CA3AF;}
+        .emptyState .eIcon{font-size:62px;margin-bottom:14px;}
+        .phTitle{text-align:center;margin-bottom:6px;}
+        .phTitle h1{font-family:'Sacramento',cursive;font-size:48px;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .phTitle p{color:#718096;font-size:15px;margin-top:7px;}
+        .clearBtn{margin-top:22px;padding:14px 32px;border:none;border-radius:26px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:15px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;transition:all .35s;box-shadow:0 12px 30px rgba(231,76,60,.35);}
+        .clearBtn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(231,76,60,.45);}
+
+        /* PRODUCTS */
+        .prodWrap{max-width:1280px;margin:28px auto 70px;padding:0 22px;}
+        .catGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;}
+        .catCard{background:var(--glass);border-radius:30px;padding:36px 22px;text-align:center;cursor:pointer;box-shadow:0 14px 40px rgba(0,0,0,.1);border:2px solid rgba(255,255,255,.6);transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden;}
+        .catCard:hover{transform:translateY(-16px) scale(1.02);box-shadow:0 36px 72px rgba(0,0,0,.18);}
+        .catCard .catIco{font-size:56px;margin-bottom:14px;display:block;transition:transform .3s;}
+        .catCard:hover .catIco{transform:scale(1.2) rotate(5deg);}
+        .catCard .catTitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#2d3748;margin-bottom:6px;}
+        .catCard .catSub{font-size:13px;color:#718096;}
+        .catCard .catBdg{display:inline-block;margin-top:13px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;}
+
+        /* ANALYZER PAGES */
+        .analyzerWrap{max-width:860px;margin:28px auto 70px;padding:0 18px;}
+        .anHead{text-align:center;margin-bottom:36px;animation:slideUp .6s ease;}
+        .anHead .anIcon{font-size:64px;margin-bottom:12px;display:block;}
+        .anHead h1{font-family:'Sacramento',cursive;font-size:52px;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .anHead p{color:#6B7280;font-size:16px;margin-top:8px;font-weight:500;}
+
+        /* CAMERA / UPLOAD TOGGLE */
+        .inputToggle{display:flex;gap:12px;margin-bottom:22px;justify-content:center;}
+        .inputToggleBtn{flex:1;max-width:200px;padding:14px 18px;border:2px solid rgba(195,155,211,.35);border-radius:20px;background:rgba(255,255,255,.8);cursor:pointer;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:700;color:#5B4B6B;text-align:center;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;}
+        .inputToggleBtn:hover{border-color:var(--pl);transform:translateY(-2px);}
+        .inputToggleBtn.active{border-color:var(--pm);background:linear-gradient(135deg,rgba(155,89,182,.12),rgba(108,52,131,.08));color:var(--pd);}
+
+        /* CAMERA VIEW */
+        .cameraBox{background:var(--glass);border-radius:32px;padding:30px;box-shadow:var(--shadow);border:2px solid rgba(195,155,211,.4);text-align:center;display:none;animation:slideUp .5s ease;}
+        .cameraBox.show{display:block;}
+        .cameraBox video{border-radius:20px;max-width:100%;width:400px;height:300px;object-fit:cover;box-shadow:0 15px 40px rgba(0,0,0,.2);}
+        .cameraBox canvas{display:none;}
+        .camBtns{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+        .camBtn{padding:13px 24px;border:none;border-radius:20px;background:linear-gradient(135deg,var(--pl),#af7ac5);color:#fff;font-size:15px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;transition:all .3s;box-shadow:0 10px 28px rgba(195,155,211,.4);}
+        .camBtn:hover{transform:translateY(-3px);background:linear-gradient(135deg,var(--pd),var(--pm));}
+        .camBtn.danger{background:linear-gradient(135deg,#e74c3c,#c0392b);box-shadow:0 10px 28px rgba(231,76,60,.3);}
+        .camBtn.danger:hover{background:linear-gradient(135deg,#c0392b,#a93226);}
+        .camSwitchBtn{padding:10px 16px;border:2px solid rgba(195,155,211,.4);border-radius:16px;background:rgba(255,255,255,.8);color:var(--pd);font-size:13px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;transition:all .3s;}
+        .camSwitchBtn:hover{border-color:var(--pl);transform:translateY(-2px);}
+
+        .uploadZone{background:var(--glass);border-radius:32px;padding:44px 36px;box-shadow:var(--shadow);border:2px dashed rgba(195,155,211,.5);text-align:center;cursor:pointer;transition:all .4s;position:relative;overflow:hidden;animation:slideUp .75s ease-out;}
+        .uploadZone:hover,.uploadZone.drag{border-color:var(--pm);background:rgba(255,255,255,.97);transform:translateY(-4px);box-shadow:0 40px 90px rgba(108,52,131,.2);}
+        .uploadZone .uzIcon{font-size:54px;margin-bottom:14px;display:block;transition:transform .4s;}
+        .uploadZone:hover .uzIcon{transform:scale(1.15) translateY(-5px);}
+        .uploadZone h3{font-family:'Playfair Display',serif;font-size:22px;color:#2d3748;margin-bottom:6px;}
+        .uploadZone p{color:#9CA3AF;font-size:14px;}
+        .uploadZone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+        .previewBox{background:var(--glass);border-radius:32px;padding:28px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45);margin-top:22px;display:none;animation:fadeUp .5s ease;}
+        .previewBox.show{display:block;}
+        .previewInner{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start;}
+        .imgFrame{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.18);}
+        .imgFrame img{width:200px;height:200px;object-fit:cover;display:block;}
+        .scanOverlay{position:absolute;inset:0;display:none;}
+        .scanOverlay.active{display:block;}
+        .scanLine{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(155,89,182,.8),transparent);animation:scanLine 1.8s ease-in-out infinite;box-shadow:0 0 18px rgba(155,89,182,.6);}
+        .scanGrid{position:absolute;inset:0;background-image:linear-gradient(rgba(155,89,182,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(155,89,182,.08) 1px,transparent 1px);background-size:20px 20px;}
+        .previewMeta{display:flex;flex-direction:column;justify-content:center;gap:10px;}
+        .previewMeta h4{font-family:'Playfair Display',serif;font-size:18px;color:#2d3748;}
+        .previewMeta p{font-size:13px;color:#718096;}
+        .fileChip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(195,155,211,.18);border-radius:20px;font-size:12px;color:var(--pd);font-weight:700;}
+
+        .analyzeBtn{width:100%;padding:20px;border:none;border-radius:28px;background:linear-gradient(135deg,var(--pl),#af7ac5);color:#fff;font-size:17px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;position:relative;overflow:hidden;transition:all .4s;box-shadow:0 16px 40px rgba(195,155,211,.42);margin-top:18px;}
+        .analyzeBtn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .5s;}
+        .analyzeBtn:hover::before{left:100%;}
+        .analyzeBtn:hover{transform:translateY(-4px);background:linear-gradient(135deg,var(--pd),var(--pm));box-shadow:0 24px 52px rgba(195,155,211,.5);}
+        .analyzeBtn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+        .analyzeBtn.loading{pointer-events:none;}
+        .analyzeBtn.loading .aBtnTxt{opacity:0;}
+        .analyzeBtn.loading::after{content:'';position:absolute;top:50%;left:50%;width:24px;height:24px;margin:-12px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+
+        /* SKIN RESULT */
+        .skinResult{background:var(--glass);border-radius:32px;padding:36px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45);margin-top:24px;display:none;}
+        .skinResult.show{display:block;animation:resultAppear .6s cubic-bezier(.34,1.56,.64,1);}
+        .skinResultHead{display:flex;align-items:center;gap:20px;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid rgba(195,155,211,.25);flex-wrap:wrap;}
+        .skinTypeBadge{min-width:110px;height:110px;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;gap:5px;flex-shrink:0;}
+        .skinTypeBadge .sIcon{font-size:36px;}
+        .skinResultInfo h2{font-family:'Playfair Display',serif;font-size:26px;color:#2d3748;margin-bottom:4px;}
+        .skinResultInfo p{color:#718096;font-size:14px;line-height:1.6;}
+
+        /* FACE SHAPE BADGE */
+        .faceShapeBadge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:linear-gradient(135deg,rgba(108,52,131,.1),rgba(155,89,182,.08));border:2px solid rgba(195,155,211,.35);border-radius:20px;margin-top:10px;font-size:13px;font-weight:700;color:var(--pd);}
+        .faceShapeBadge .fsIcon{font-size:18px;}
+
+        .overallRating{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,rgba(108,52,131,.07),rgba(155,89,182,.07));border-radius:20px;padding:18px 22px;margin-bottom:24px;border:2px solid rgba(195,155,211,.25);}
+        .bigScore{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .ratingLabel{font-size:13px;color:#6B7280;}
+        .ratingLabel strong{font-size:18px;color:var(--pd);display:block;margin-bottom:3px;}
+        .starRow{display:flex;gap:4px;margin-top:6px;}
+        .star{font-size:20px;color:#E8E8E8;transition:color .3s;}
+        .star.filled{color:#FFD700;}
+
+        .metricsGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+        .metricCard{background:rgba(255,255,255,.7);border-radius:18px;padding:16px 18px;border:1.5px solid rgba(195,155,211,.2);}
+        .metricLabel{font-size:12px;font-weight:700;color:#718096;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;}
+        .metricBarWrap{height:8px;background:rgba(195,155,211,.2);border-radius:20px;overflow:hidden;}
+        .metricBar{height:100%;border-radius:20px;width:0;transition:width 1.2s cubic-bezier(.25,.46,.45,.94);}
+        .metricVal{font-size:20px;font-weight:700;color:var(--pd);margin-top:5px;}
+
+        .tipsSection{margin-top:4px;}
+        .tipsSection h4{font-family:'Playfair Display',serif;font-size:17px;color:#2d3748;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+        .tipsList{display:flex;flex-direction:column;gap:9px;}
+        .tipItem{display:flex;align-items:flex-start;gap:10px;padding:12px 15px;background:rgba(255,255,255,.7);border-radius:14px;border:1px solid rgba(195,155,211,.2);font-size:13.5px;color:#2d3748;line-height:1.5;}
+        .tipItem .tipIco{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+        .prodsSection{margin-top:20px;}
+        .prodsSection h4{font-family:'Playfair Display',serif;font-size:17px;color:#2d3748;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+        .prodsGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;}
+        .prodCard{background:rgba(255,255,255,.7);border-radius:16px;padding:13px 12px;border:1.5px solid rgba(195,155,211,.2);text-align:center;transition:all .3s;}
+        .prodCard:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1);}
+        .prodCard .pIcon{font-size:26px;margin-bottom:6px;}
+        .prodCard .pName{font-size:12px;font-weight:700;color:#2d3748;}
+        .prodCard .pBrand{font-size:11px;color:#9CA3AF;margin-top:2px;}
+
+        /* SCAN RESULT */
+        .scanResult{background:var(--glass);border-radius:32px;padding:36px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.45);margin-top:24px;display:none;}
+        .scanResult.show{display:block;animation:resultAppear .6s cubic-bezier(.34,1.56,.64,1);}
+        .scanResultHead{display:flex;align-items:center;gap:18px;margin-bottom:24px;padding-bottom:18px;border-bottom:2px solid rgba(195,155,211,.25);}
+        .scanResultIcon{width:80px;height:80px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;background:linear-gradient(135deg,var(--pd),var(--pm));}
+        .scanResultInfo h2{font-family:'Playfair Display',serif;font-size:24px;color:#2d3748;margin-bottom:4px;}
+        .scanResultInfo p{color:#9CA3AF;font-size:13px;}
+        .scanBadge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(135deg,#27AE60,#1E8449);}
+        .scanBadge.warn{background:linear-gradient(135deg,#E67E22,#BA4A00);}
+        .scanBadge.danger{background:linear-gradient(135deg,#E74C3C,#C0392B);}
+        .detailsGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:22px;}
+        .detailCard{background:rgba(255,255,255,.7);border-radius:16px;padding:15px 16px;border:1.5px solid rgba(195,155,211,.2);}
+        .detailCard .dLabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9CA3AF;margin-bottom:5px;}
+        .detailCard .dVal{font-size:15px;font-weight:700;color:#2d3748;}
+        .detailCard .dSub{font-size:11px;color:#718096;margin-top:2px;}
+        .ingrSection{margin-top:4px;}
+        .ingrSection h4{font-family:'Playfair Display',serif;font-size:17px;color:#2d3748;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+        .ingrList{display:flex;flex-wrap:wrap;gap:8px;}
+        .ingrChip{padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px;}
+        .ingrChip.safe{background:rgba(72,187,120,.15);color:#1E8449;border:1.5px solid rgba(72,187,120,.3);}
+        .ingrChip.warn{background:rgba(230,126,34,.13);color:#BA4A00;border:1.5px solid rgba(230,126,34,.28);}
+        .ingrChip.bad{background:rgba(231,76,60,.13);color:#C0392B;border:1.5px solid rgba(231,76,60,.25);}
+        .aiSummary{margin-top:18px;padding:18px 20px;background:linear-gradient(135deg,rgba(108,52,131,.07),rgba(155,89,182,.07));border-radius:18px;border:1.5px solid rgba(195,155,211,.3);font-size:14px;color:#2d3748;line-height:1.7;}
+        .aiSummary strong{color:var(--pd);}
+
+        .loadingState{text-align:center;padding:40px 20px;display:none;}
+        .loadingState.show{display:block;}
+        .loadingState .lsIcon{font-size:48px;display:block;margin-bottom:14px;animation:floatit 1.5s ease-in-out infinite;}
+        .loadingState h3{font-family:'Playfair Display',serif;font-size:20px;color:#2d3748;margin-bottom:6px;}
+        .loadingState p{color:#9CA3AF;font-size:14px;}
+        .loadingDots::after{content:'';animation:dots 1.5s infinite;}
+
+        /* MODALS */
+        .mOverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(9px);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s;}
+        .mOverlay.open{opacity:1;visibility:visible;}
+        .mBox{background:#fff;border-radius:32px;padding:40px 36px;width:min(660px,92vw);max-height:86vh;overflow-y:auto;position:relative;animation:slideUp .45s ease;box-shadow:0 50px 100px rgba(0,0,0,.25);}
+        .mClose{position:absolute;top:17px;right:20px;width:35px;height:35px;border-radius:50%;background:rgba(195,155,211,.2);border:none;cursor:pointer;font-size:16px;color:var(--pd);display:flex;align-items:center;justify-content:center;transition:all .3s;}
+        .mClose:hover{background:rgba(195,155,211,.45);transform:rotate(90deg);}
+        .mTitle{font-family:'Playfair Display',serif;font-size:28px;color:#2d3748;margin-bottom:4px;}
+        .mSub{color:#718096;font-size:14px;margin-bottom:25px;}
+        .appGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+        .appRow{display:flex;align-items:center;gap:13px;padding:15px 17px;border:2px solid rgba(195,155,211,.25);border-radius:17px;cursor:pointer;text-decoration:none;color:inherit;transition:all .35s;}
+        .appRow:hover{border-color:var(--pl);transform:translateY(-4px);box-shadow:0 13px 30px rgba(0,0,0,.12);background:rgba(195,155,211,.06);}
+        .appIco{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 6px 16px rgba(0,0,0,.12);}
+        .appInfo h4{font-size:14px;font-weight:700;color:#2d3748;margin-bottom:2px;}
+        .appInfo p{font-size:11px;color:#718096;}
+        .appArr{margin-left:auto;color:var(--pl);font-size:12px;}
+        .siteList{display:grid;gap:11px;}
+        .siteRow{display:flex;align-items:center;gap:13px;padding:15px 18px;border:2px solid rgba(195,155,211,.25);border-radius:17px;cursor:pointer;background:rgba(255,255,255,.8);transition:all .35s;}
+        .siteRow:hover{border-color:var(--pm);transform:translateX(8px);box-shadow:0 10px 26px rgba(0,0,0,.1);background:#fff;}
+        .siteIco{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+        .siteInfo h4{font-size:14px;font-weight:700;color:#2d3748;}
+        .siteInfo p{font-size:11px;color:#718096;margin-top:2px;}
+        .openBtn{margin-left:auto;padding:7px 14px;background:linear-gradient(135deg,var(--pl),var(--pm));color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Quicksand',sans-serif;transition:all .3s;white-space:nowrap;}
+        .openBtn:hover{transform:scale(1.06);box-shadow:0 5px 16px rgba(195,155,211,.4);}
+
+        .statusBar{position:fixed;bottom:20px;right:20px;z-index:700;background:var(--glass);backdrop-filter:blur(18px);padding:15px 22px;border-radius:24px;box-shadow:0 20px 44px rgba(0,0,0,.13);font-size:14px;color:#5B4B6B;border:1px solid rgba(255,255,255,.4);animation:pulseSbar 2s infinite;display:none;}
+
+        .oauthAccount{display:flex;align-items:center;gap:13px;padding:14px 16px;border:2px solid rgba(195,155,211,.22);border-radius:16px;cursor:pointer;transition:all .3s;background:rgba(255,255,255,.8);}
+        .oauthAccount:hover{border-color:var(--pl);transform:translateX(5px);background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.1);}
+        .oauthAvatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+        .oauthInfo{text-align:left;}
+        .oauthInfo strong{display:block;font-size:14px;color:#2d3748;}
+        .oauthInfo span{font-size:12px;color:#718096;}
+        .oauthArrow{margin-left:auto;color:var(--pl);font-size:14px;}
+
+        .cursorSparkle{position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#FFD700,var(--pm));animation:cursorFade .7s ease forwards;}
+        .confettiPiece{position:fixed;pointer-events:none;z-index:9998;width:10px;height:10px;animation:confettiFall linear forwards;}
+
+        .horoscopeToast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg,var(--pd),var(--pm));color:#fff;padding:16px 28px;border-radius:22px;font-size:15px;font-weight:700;box-shadow:0 20px 48px rgba(108,52,131,.4);z-index:9000;opacity:0;transition:all .5s cubic-bezier(.34,1.56,.64,1);pointer-events:none;text-align:center;max-width:320px;line-height:1.5;}
+        .horoscopeToast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+        .palettePrev{display:flex;gap:6px;margin-top:10px;justify-content:center;height:22px;}
+        .paletteDot{width:22px;height:22px;border-radius:50%;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:all .4s cubic-bezier(.34,1.56,.64,1);}
+        .paletteDot:hover{transform:scale(1.4);}
+
+        .inspireWidget{position:fixed;bottom:20px;left:20px;z-index:700;background:var(--glass);backdrop-filter:blur(18px);padding:14px 18px;border-radius:22px;box-shadow:0 16px 40px rgba(0,0,0,.12);font-size:13px;color:#5B4B6B;border:1px solid rgba(255,255,255,.4);max-width:200px;display:none;animation:pulseSbar 3s infinite;cursor:pointer;transition:all .3s;}
+        .inspireWidget:hover{transform:translateY(-4px);box-shadow:0 22px 50px rgba(108,52,131,.2);}
+        .inspireWidget .inspireHead{font-weight:700;color:var(--pd);font-size:12px;margin-bottom:5px;}
+        .inspireWidget .inspireText{font-style:italic;line-height:1.5;}
+
+        /* PURCHASE MODAL */
+        .purchaseModal .mBox{max-width:500px;}
+        .purchaseTier{border:2px solid rgba(195,155,211,.3);border-radius:20px;padding:20px;margin-bottom:14px;cursor:pointer;transition:all .3s;position:relative;}
+        .purchaseTier:hover{border-color:var(--pm);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.1);}
+        .purchaseTier.popular{border-color:var(--pm);background:linear-gradient(135deg,rgba(155,89,182,.07),rgba(108,52,131,.04));}
+        .purchaseTier .ptBadge{position:absolute;top:-10px;right:16px;background:var(--pm);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;}
+        .purchaseTier h4{font-size:17px;font-weight:700;color:#2d3748;margin-bottom:4px;}
+        .purchaseTier .ptPrice{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--pd),#F39C12);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .purchaseTier .ptFeats{font-size:12px;color:#718096;margin-top:6px;line-height:1.7;}
+        .payBtn{width:100%;padding:16px;border:none;border-radius:22px;background:linear-gradient(135deg,#F39C12,#D35400);color:#fff;font-size:16px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;margin-top:8px;transition:all .3s;box-shadow:0 12px 30px rgba(243,156,18,.35);}
+        .payBtn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(243,156,18,.5);}
+
+        @media(max-width:680px){
+            .lcard{padding:40px 24px;}
+            .genCard{padding:32px 20px;}
+            .frow{grid-template-columns:1fr;}
+            .brandGrid,.catGrid{grid-template-columns:1fr 1fr;}
+            .appGrid{grid-template-columns:1fr;}
+            .navbar{padding:10px 10px;gap:5px;top:10px;}
+            .nbtn{padding:8px 10px;font-size:11px;}
+            .socBtns{flex-direction:column;}
+            .previewInner{grid-template-columns:1fr;}
+            .metricsGrid,.detailsGrid{grid-template-columns:1fr;}
+            .logoTypeRow{flex-wrap:wrap;}
+        }
+        @media(max-width:440px){.brandGrid,.catGrid{grid-template-columns:1fr;}}
+    </style>
+</head>
+<body>
+
+<div class="spark" style="top:8%;left:11%;animation-delay:0s"></div>
+<div class="spark" style="top:21%;left:86%;animation-delay:.4s"></div>
+<div class="spark" style="top:40%;left:17%;animation-delay:.9s"></div>
+<div class="spark" style="top:67%;left:79%;animation-delay:1.5s"></div>
+<div class="spark" style="top:83%;left:13%;animation-delay:2s"></div>
+<div class="shootStar" style="animation-delay:0s"></div>
+<div class="shootStar" style="animation-delay:3s"></div>
+<div class="shootStar" style="animation-delay:6s"></div>
+<div class="floatWord" style="top:9%;left:4%;animation-delay:0s">✨ Morning Glow</div>
+<div class="floatWord" style="top:46%;left:2%;animation-delay:1.5s">🌿 Fresh Essentials</div>
+<div class="floatWord" style="bottom:13%;left:5%;animation-delay:3s">💖 Self Care</div>
+<div class="floatWord" style="top:13%;right:6%;animation-delay:.9s">👗 Style Magic</div>
+<div class="floatWord" style="top:53%;right:3%;animation-delay:2.3s">🚗 Freedom</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+    <div class="lcard">
+        <div class="lLogoBox">BC</div>
+        <h1>BrandCraft</h1>
+        <p class="lsub">Sign in to your magical workspace ✨</p>
+        <div class="alertBox err" id="errBox"></div>
+        <div class="alertBox ok" id="okBox"></div>
+        <div class="fg"><label>Email Address</label><div class="iw"><i class="fas fa-envelope ico"></i><input type="email" id="inEmail" placeholder="you@brandcraft.com" autocomplete="email"></div></div>
+        <div class="fg"><label>Password</label><div class="iw"><i class="fas fa-lock ico"></i><input type="password" id="inPass" placeholder="Enter your magic password" autocomplete="current-password"><button class="ptoggle" onclick="togglePwd()" tabindex="-1"><i class="fas fa-eye" id="eyeIcon"></i></button></div></div>
+        <div class="lrow"><label class="remRow"><input type="checkbox" id="rememberMe"> Remember me</label><span class="fgtLink" onclick="forgotPwd()">Forgot password?</span></div>
+        <button class="loginBtn" id="loginBtn" onclick="doLogin()"><span class="btnTxt">✨ Enter BrandCraft</span></button>
+        <div class="orDiv"><span>or continue with</span></div>
+        <div class="socBtns">
+            <button class="socBtn socBtn--google" onclick="oauthLogin('google')">
+                <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                Google
+            </button>
+            <button class="socBtn socBtn--apple" onclick="oauthLogin('apple')">
+                <svg width="18" height="18" viewBox="0 0 814 1000"><path fill="currentColor" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.8 0 663.8 0 542.8c0-193.3 126.4-295.5 250.8-295.5 66.1 0 121.2 43.4 162.7 43.4 39.5 0 101.1-46 176.3-46 28.5 0 130.9 2.6 198.3 99.2zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/></svg>
+                Apple
+            </button>
+            <button class="socBtn socBtn--fb" onclick="oauthLogin('facebook')">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+            </button>
+        </div>
+        <p class="signupLine">No account? <a onclick="signupNote()">Create one free ✨</a></p>
+        <div class="demoHint">💡 <b>Demo:</b> Any email &amp; password <b>123456</b></div>
+    </div>
+</div>
+
+<!-- OAUTH MODAL -->
+<div class="mOverlay" id="mOAuth">
+    <div class="mBox" style="max-width:420px;text-align:center;padding:44px 36px;">
+        <button class="mClose" onclick="closeModal('mOAuth')">✕</button>
+        <div id="oauthProviderIcon" style="font-size:52px;margin-bottom:14px;"></div>
+        <h2 class="mTitle" id="oauthTitle" style="text-align:center;">Sign in with Google</h2>
+        <p class="mSub" id="oauthSub" style="text-align:center;margin-bottom:22px;">Choose an account to continue to BrandCraft</p>
+        <div id="oauthAccountList" style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;"></div>
+        <div class="orDiv"><span>or use another account</span></div>
+        <div style="display:flex;flex-direction:column;gap:11px;margin-top:14px;">
+            <div class="iw" style="margin-bottom:0;"><i class="fas fa-envelope ico"></i><input type="email" id="oauthEmail" placeholder="Enter your email" style="width:100%;padding:14px 18px 14px 44px;border:2px solid rgba(195,155,211,.3);border-radius:18px;font-size:14px;font-family:'Quicksand',sans-serif;background:rgba(255,255,255,.9);color:#2d3748;outline:none;transition:all .3s;"></div>
+            <button onclick="oauthContinue()" style="width:100%;padding:15px;border:none;border-radius:20px;font-size:15px;font-weight:700;font-family:'Quicksand',sans-serif;cursor:pointer;color:#fff;transition:all .3s;" id="oauthContinueBtn">Continue →</button>
+        </div>
+        <p style="margin-top:16px;font-size:11px;color:#9CA3AF;line-height:1.6;">By continuing, BrandCraft can see your name, email address, and profile picture. See BrandCraft's <span style="color:var(--pm);cursor:pointer">Privacy Policy</span>.</p>
+    </div>
+</div>
+
+<!-- PURCHASE MODAL -->
+<div class="mOverlay purchaseModal" id="mPurchase">
+    <div class="mBox">
+        <button class="mClose" onclick="closeModal('mPurchase')">✕</button>
+        <h2 class="mTitle">💎 Get Your Custom Logo</h2>
+        <p class="mSub">Professional, industry-specific artwork — delivered in all formats</p>
+        <div class="purchaseTier" onclick="selectTier('basic')">
+            <h4>🎨 Basic Logo</h4>
+            <div class="ptPrice">₹499</div>
+            <div class="ptFeats">✓ PNG & JPG formats &nbsp;·&nbsp; ✓ 3 color variations &nbsp;·&nbsp; ✓ High resolution &nbsp;·&nbsp; ✓ Commercial use &nbsp;·&nbsp; ✓ 1 revision</div>
+        </div>
+        <div class="purchaseTier popular" onclick="selectTier('pro')">
+            <div class="ptBadge">Most Popular ⭐</div>
+            <h4>🚀 Pro Logo Package</h4>
+            <div class="ptPrice">₹1,299</div>
+            <div class="ptFeats">✓ Everything in Basic &nbsp;·&nbsp; ✓ SVG Vector file &nbsp;·&nbsp; ✓ Transparent background &nbsp;·&nbsp; ✓ Social media kit &nbsp;·&nbsp; ✓ 3 revisions &nbsp;·&nbsp; ✓ Brand guidelines PDF</div>
+        </div>
+        <div class="purchaseTier" onclick="selectTier('premium')">
+            <h4>👑 Premium Brand Kit</h4>
+            <div class="ptPrice">₹2,999</div>
+            <div class="ptFeats">✓ Everything in Pro &nbsp;·&nbsp; ✓ Animated logo (GIF/MP4) &nbsp;·&nbsp; ✓ Business card design &nbsp;·&nbsp; ✓ Letterhead & email signature &nbsp;·&nbsp; ✓ Unlimited revisions &nbsp;·&nbsp; ✓ Dedicated support</div>
+        </div>
+        <button class="payBtn" onclick="proceedPayment()">🛒 Proceed to Payment</button>
+        <p style="text-align:center;font-size:12px;color:#9CA3AF;margin-top:12px;">🔒 Secure payment · 7-day money-back guarantee</p>
+    </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+    <nav class="navbar">
+        <button class="nbtn active" id="nb-gen"    onclick="goPage('gen')">   <i class="fas fa-magic"></i> Generator</button>
+        <button class="nbtn"        id="nb-portal" onclick="goPage('portal')"><i class="fas fa-th-large"></i> Portal</button>
+        <button class="nbtn"        id="nb-prod"   onclick="goPage('prod')">  <i class="fas fa-box"></i> Products</button>
+        <button class="nbtn"        id="nb-skin"   onclick="goPage('skin')">  <i class="fas fa-spa"></i> Skin AI</button>
+        <button class="nbtn"        id="nb-pscan"  onclick="goPage('pscan')"> <i class="fas fa-barcode"></i> Scanner</button>
+        <div class="userBadge"><div class="uAvatar" id="uAv">?</div><span class="uName" id="uNm">Guest</span></div>
+        <button class="logoutBtn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </nav>
+
+    <!-- GENERATOR -->
+    <div class="page active" id="page-gen">
+        <div class="genWrap">
+            <div class="genCard">
+                <div class="genHead"><div class="genLogoBox" id="genLogoBoxBtn">BC</div><h1>BrandCraft</h1><p>Generate your brand identity &amp; logo ✨</p></div>
+
+                <!-- Logo Type -->
+                <div class="fgroup">
+                    <label>Logo Type <span style="color:var(--pl)">*</span></label>
+                    <div class="logoTypeRow">
+                        <div class="logoTypeBtn sel" onclick="selectLogoType('classic',this)" data-type="classic"><span class="ltIcon">🔠</span>Classic Initials<br><small style="font-weight:400;color:#9CA3AF">Free</small></div>
+                        <div class="logoTypeBtn" onclick="selectLogoType('illustrated',this)" data-type="illustrated"><span class="ltIcon">🎨</span>Illustrated<br><small style="font-weight:400;color:#E67E22">Paid ₹499+</small></div>
+                        <div class="logoTypeBtn" onclick="selectLogoType('wordmark',this)" data-type="wordmark"><span class="ltIcon">✍️</span>Wordmark<br><small style="font-weight:400;color:#9CA3AF">Free</small></div>
+                        <div class="logoTypeBtn" onclick="selectLogoType('mascot',this)" data-type="mascot"><span class="ltIcon">🦁</span>Mascot<br><small style="font-weight:400;color:#E67E22">Paid ₹799+</small></div>
+                    </div>
+                </div>
+
+                <div class="fgroup"><label>Brand Name <span style="color:var(--pl)">*</span></label><input type="text" id="fName" placeholder="e.g., GlowVita, UrbanNest, BoltTech…"></div>
+                <div class="frow">
+                    <div class="fgroup"><label>Design Style</label><select id="fStyle"><option value="">Choose style…</option><option>Modern Minimal</option><option>Vintage Retro</option><option>Bold Geometric</option><option>Elegant Luxury</option><option>Playful & Fun</option><option>Nature Organic</option><option>Dark & Edgy</option><option>Soft Pastel</option></select></div>
+                    <div class="fgroup"><label>Industry</label><select id="fInd" onchange="updateIndustryHint()"><option value="">Choose industry…</option><option>Skincare & Beauty</option><option>Fashion & Apparel</option><option>Food & Beverages</option><option>Tech & Digital</option><option>Wellness & Fitness</option><option>Accessories & Jewellery</option><option>Electronics</option><option>Home & Decor</option><option>Watches & Luxury</option><option>Automobiles</option><option>Photography</option><option>Sports & Fitness</option></select></div>
+                </div>
+                <div id="industryHint" style="margin:-10px 0 16px;padding:10px 15px;background:rgba(195,155,211,.1);border-radius:14px;font-size:13px;color:var(--pd);font-weight:700;display:none;"></div>
+                <div class="frow">
+                    <div class="fgroup"><label>Target Audience</label><input type="text" id="fAud" placeholder="e.g., Women 25–35, Gen Z…"></div>
+                    <div class="fgroup"><label>Color Vibe</label>
+                        <select id="fColor" onchange="updatePalettePreview()"><option value="auto">✨ Auto-generate</option><option value="rose">🌹 Rose & Gold</option><option value="ocean">🌊 Ocean Blue</option><option value="forest">🌿 Forest Green</option><option value="sunset">🌅 Sunset Orange</option><option value="midnight">🌙 Midnight Dark</option><option value="candy">🍬 Candy Pink</option><option value="earth">🌍 Earthy Tones</option></select>
+                        <div class="palettePrev" id="palettePrev"><div class="paletteDot" style="background:#c39bd3"></div><div class="paletteDot" style="background:#9B59B6"></div><div class="paletteDot" style="background:#6C3483"></div></div>
+                    </div>
+                </div>
+                <div class="fgroup"><label>Brand Tagline <span style="color:#9CA3AF;font-weight:400">(optional)</span></label><input type="text" id="fTag" placeholder="e.g., Glow from within…"></div>
+                <div class="fgroup" id="illustrationDescGroup" style="display:none;"><label>Describe Your Logo Vision <span style="color:var(--pl)">*</span></label><textarea id="fDesc" placeholder="e.g., A stylish woman in a red dress for a fashion brand, or a luxury watch with gold details…" rows="3"></textarea></div>
+
+                <button class="genBtn" id="mainGenBtn" onclick="generateBrand()"><span class="starEmoji">✨</span><span class="genBtnTxt">✨ Generate Brand &amp; Logo</span></button>
+
+                <div class="resultBox" id="resultBox">
+                    <h3>Your Brand Logo ✨</h3>
+                    <div class="svgHolder" id="svgHolder"></div>
+                    <div class="brandTagline" id="brandTagline"></div>
+                    <div class="tagsRow" id="tagsRow"></div>
+                    <div class="pricingCard" id="pricingCard" style="display:none;">
+                        <h4>🎨 Want this as a Professional File?</h4>
+                        <div class="price" id="pricingAmount">₹499</div>
+                        <div class="priceNote">One-time payment · Delivered within 24 hours</div>
+                        <div class="priceFeats">
+                            <span class="pFeat">✓ SVG Vector</span><span class="pFeat">✓ High-Res PNG</span><span class="pFeat">✓ Commercial Use</span><span class="pFeat">✓ Brand Guidelines</span>
+                        </div>
+                        <button class="buyLogoBtn" onclick="openModal('mPurchase')">💳 Buy This Logo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTAL -->
+    <div class="page" id="page-portal">
+        <div class="portalWrap">
+            <div class="phTitle"><h1>Brand Portal</h1><p>Your magical brand collection ✨</p></div>
+            <div class="secHeader">🗂️ Stored Logos <span class="badge" id="storedBadge">0</span></div>
+            <div class="brandGrid" id="storedGrid"></div>
+            <div style="text-align:center;"><button class="clearBtn" onclick="clearStored()">🗑️ Clear My Stored Logos</button></div>
+            <div class="secHeader" style="margin-top:40px;">✨ Sample Logos</div>
+            <div class="brandGrid" id="sampleGrid"></div>
+        </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="page" id="page-prod">
+        <div class="prodWrap">
+            <div class="phTitle" style="margin-bottom:32px;"><h1 style="font-family:'Sacramento',cursive;font-size:48px;background:linear-gradient(135deg,var(--pd),var(--pm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Product Universe</h1><p style="color:#718096;font-size:15px;margin-top:7px;">Tap a category to explore ✨</p></div>
+            <div class="catGrid">
+                <div class="catCard" onclick="openModal('mSkin')"><span class="catIco">🧴</span><div class="catTitle">Skincare</div><div class="catSub">Serums, mists & glow essentials</div><span class="catBdg" style="background:linear-gradient(135deg,#FF6B9D,#FF2D55)">Shop Apps ↗</span></div>
+                <div class="catCard" onclick="openModal('mAcc')"><span class="catIco">💍</span><div class="catTitle">Accessories</div><div class="catSub">Jewellery, bags & headbands</div><span class="catBdg" style="background:linear-gradient(135deg,var(--pd),var(--pm))">Choose Website ↗</span></div>
+                <div class="catCard" onclick="openModal('mElec')"><span class="catIco">💻</span><div class="catTitle">Electronics</div><div class="catSub">Gadgets, audio & wearables</div><span class="catBdg" style="background:linear-gradient(135deg,#2980B9,#1A5276)">Shop Now ↗</span></div>
+                <div class="catCard" onclick="openModal('mFood')"><span class="catIco">🍰</span><div class="catTitle">Food & Beverages</div><div class="catSub">Order food, groceries & gourmet</div><span class="catBdg" style="background:linear-gradient(135deg,#E67E22,#CA6F1E)">Order Now ↗</span></div>
+                <div class="catCard" onclick="openModal('mFash')"><span class="catIco">👗</span><div class="catTitle">Fashion</div><div class="catSub">Trends, ethnic & streetwear</div><span class="catBdg" style="background:linear-gradient(135deg,#27AE60,#1E8449)">Browse ↗</span></div>
+                <div class="catCard" onclick="goPage('skin')"><span class="catIco">🔬</span><div class="catTitle">Skin Analyser</div><div class="catSub">AI-powered skin type detection</div><span class="catBdg" style="background:linear-gradient(135deg,var(--pd),var(--pm))">Analyse Now ✨</span></div>
+                <div class="catCard" onclick="goPage('pscan')"><span class="catIco">📷</span><div class="catTitle">Product Scanner</div><div class="catSub">Scan any product for full details</div><span class="catBdg" style="background:linear-gradient(135deg,#16A085,#0E6655)">Scan Now ✨</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SKIN ANALYSER PAGE -->
+    <div class="page" id="page-skin">
+        <div class="analyzerWrap">
+            <div class="anHead">
+                <span class="anIcon">🔬</span>
+                <h1>Skin Analyser</h1>
+                <p>Take a selfie or upload a photo — AI detects your skin type, face shape & gives personalised care tips ✨</p>
+            </div>
+
+            <!-- Input toggle -->
+            <div class="inputToggle">
+                <div class="inputToggleBtn active" id="skinToggleUpload" onclick="switchSkinInput('upload')"><i class="fas fa-upload"></i> Upload Photo</div>
+                <div class="inputToggleBtn" id="skinToggleCamera" onclick="switchSkinInput('camera')"><i class="fas fa-camera"></i> Take Selfie</div>
+            </div>
+
+            <!-- Upload zone -->
+            <div id="skinUploadSection">
+                <div class="uploadZone" onclick="document.getElementById('skinFileInput').click()">
+                    <input type="file" id="skinFileInput" accept="image/*" onchange="onSkinFile(event)" style="display:none">
+                    <span class="uzIcon">🤳</span>
+                    <h3>Upload Your Selfie</h3>
+                    <p>Clear face photo, good lighting recommended • JPG / PNG / WEBP</p>
+                </div>
+            </div>
+
+            <!-- Camera section -->
+            <div class="cameraBox" id="skinCameraBox">
+                <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#2d3748;margin-bottom:14px;">📸 Live Camera</h3>
+                <video id="skinVideo" autoplay playsinline></video>
+                <canvas id="skinCanvas" width="400" height="300"></canvas>
+                <div class="camBtns">
+                    <button class="camBtn" onclick="captureSkinPhoto()"><i class="fas fa-camera"></i> Capture Photo</button>
+                    <button class="camSwitchBtn" onclick="switchCamera('skin')"><i class="fas fa-sync"></i> Flip Camera</button>
+                    <button class="camBtn danger" onclick="stopCamera('skin')"><i class="fas fa-times"></i> Stop Camera</button>
+                </div>
+            </div>
+
+            <div class="previewBox" id="skinPreviewBox">
+                <div class="previewInner">
+                    <div class="imgFrame">
+                        <img id="skinPreviewImg" src="" alt="Preview">
+                        <div class="scanOverlay" id="skinScanOverlay"><div class="scanGrid"></div><div class="scanLine"></div></div>
+                    </div>
+                    <div class="previewMeta">
+                        <h4>📸 Image Ready</h4>
+                        <p>Your photo has been loaded. Click Analyse below to detect your skin type, face shape, health score & get personalised product recommendations.</p>
+                        <span class="fileChip" id="skinFileName">📎 photo.jpg</span>
+                        <button class="analyzeBtn" id="skinAnalyzeBtn" onclick="analyseSkin()"><span class="aBtnTxt">🔬 Analyse My Skin</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loadingState" id="skinLoadingState">
+                <span class="lsIcon">🔬</span>
+                <h3>Analysing Your Skin<span class="loadingDots"></span></h3>
+                <p>AI is scanning skin type, face shape, texture, tone, hydration levels & pore visibility…</p>
+            </div>
+
+            <!-- SKIN RESULT -->
+            <div class="skinResult" id="skinResult">
+                <div class="skinResultHead">
+                    <div class="skinTypeBadge" id="skinTypeBadge"><span class="sIcon">💧</span><span id="skinTypeLabel">—</span></div>
+                    <div class="skinResultInfo">
+                        <h2 id="skinTypeTitle">—</h2>
+                        <p id="skinTypeDesc">—</p>
+                        <div class="faceShapeBadge" id="faceShapeBadge" style="display:none;"><span class="fsIcon">🔷</span><span id="faceShapeText">—</span></div>
+                    </div>
+                </div>
+                <div class="overallRating">
+                    <div class="bigScore" id="overallScore">—</div>
+                    <div>
+                        <div class="ratingLabel"><strong id="ratingWord">—</strong>Overall Skin Health</div>
+                        <div class="starRow" id="starRow"></div>
+                    </div>
+                </div>
+                <div class="metricsGrid" id="metricsGrid"></div>
+                <div class="tipsSection"><h4>💡 Personalised Skincare Tips</h4><div class="tipsList" id="tipsList"></div></div>
+                <div class="prodsSection" style="margin-top:24px;"><h4>🛍️ Recommended Products</h4><div class="prodsGrid" id="prodsGrid"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT SCANNER PAGE -->
+    <div class="page" id="page-pscan">
+        <div class="analyzerWrap">
+            <div class="anHead">
+                <span class="anIcon">📷</span>
+                <h1>Product Scanner</h1>
+                <p>Snap or upload any product — AI reveals full details, ingredients, safety & more ✨</p>
+            </div>
+
+            <!-- Input toggle -->
+            <div class="inputToggle">
+                <div class="inputToggleBtn active" id="scanToggleUpload" onclick="switchScanInput('upload')"><i class="fas fa-upload"></i> Upload Image</div>
+                <div class="inputToggleBtn" id="scanToggleCamera" onclick="switchScanInput('camera')"><i class="fas fa-camera"></i> Use Camera</div>
+            </div>
+
+            <!-- Upload zone -->
+            <div id="scanUploadSection">
+                <div class="uploadZone" onclick="document.getElementById('scanFileInput').click()">
+                    <input type="file" id="scanFileInput" accept="image/*" onchange="onScanFile(event)" style="display:none">
+                    <span class="uzIcon">📦</span>
+                    <h3>Upload Product Image</h3>
+                    <p>Bottle, box, label, or any product shot • JPG / PNG / WEBP</p>
+                </div>
+            </div>
+
+            <!-- Camera section -->
+            <div class="cameraBox" id="scanCameraBox">
+                <h3 style="font-family:'Playfair Display',serif;font-size:20px;color:#2d3748;margin-bottom:14px;">📷 Product Camera</h3>
+                <video id="scanVideo" autoplay playsinline></video>
+                <canvas id="scanCanvas" width="400" height="300"></canvas>
+                <div class="camBtns">
+                    <button class="camBtn" onclick="captureScanPhoto()"><i class="fas fa-camera"></i> Capture Product</button>
+                    <button class="camSwitchBtn" onclick="switchCamera('scan')"><i class="fas fa-sync"></i> Flip Camera</button>
+                    <button class="camBtn danger" onclick="stopCamera('scan')"><i class="fas fa-times"></i> Stop Camera</button>
+                </div>
+            </div>
+
+            <div class="previewBox" id="scanPreviewBox">
+                <div class="previewInner">
+                    <div class="imgFrame">
+                        <img id="scanPreviewImg" src="" alt="Preview">
+                        <div class="scanOverlay" id="scanScanOverlay"><div class="scanGrid"></div><div class="scanLine"></div></div>
+                    </div>
+                    <div class="previewMeta">
+                        <h4>📦 Product Ready</h4>
+                        <p>Image loaded. Click Scan below — AI will identify the product and reveal everything: ingredients, safety, ratings, and full product details.</p>
+                        <span class="fileChip" id="scanFileName">📎 product.jpg</span>
+                        <button class="analyzeBtn" id="scanAnalyzeBtn" onclick="scanProduct()"><span class="aBtnTxt">📷 Scan This Product</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loadingState" id="scanLoadingState">
+                <span class="lsIcon">🔍</span>
+                <h3>Scanning Product<span class="loadingDots"></span></h3>
+                <p>AI is identifying brand, ingredients, safety profile & detailed specs…</p>
+            </div>
+
+            <!-- SCAN RESULT -->
+            <div class="scanResult" id="scanResult">
+                <div class="scanResultHead">
+                    <div class="scanResultIcon" id="scanResultIcon">📦</div>
+                    <div class="scanResultInfo">
+                        <h2 id="scanProductName">—</h2>
+                        <p id="scanProductBrand">—</p>
+                        <span class="scanBadge" id="scanSafetyBadge">Safe ✓</span>
+                    </div>
+                </div>
+                <div class="detailsGrid" id="detailsGrid"></div>
+                <div class="ingrSection"><h4>🧪 Ingredients Analysis</h4><div class="ingrList" id="ingrList"></div></div>
+                <div class="aiSummary" id="aiSummary"></div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /#app -->
+
+<div class="statusBar" id="statusBar"><i class="fas fa-magic" style="color:var(--pl);margin-right:8px"></i><span>Pure Magic Active | <b id="bCount">0</b> stored brands ✨</span></div>
+<div class="horoscopeToast" id="horoscopeToast"></div>
+<div class="inspireWidget" id="inspireWidget" onclick="newInspiration()">
+    <div class="inspireHead">✨ Brand Inspiration</div>
+    <div class="inspireText" id="inspireText">Loading your daily spark…</div>
+</div>
+
+<!-- MODALS -->
+<div class="mOverlay" id="mSkin"><div class="mBox">
+    <button class="mClose" onclick="closeModal('mSkin')">✕</button>
+    <h2 class="mTitle">🧴 Skincare Apps</h2><p class="mSub">Choose your beauty destination</p>
+    <div class="appGrid">
+        <a href="https://www.nykaa.com" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#FF527B,#FF2D55)">💄</div><div class="appInfo"><h4>Nykaa</h4><p>India's #1 beauty platform</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.purplle.com" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#7B2FBE,#9B59B6)">💜</div><div class="appInfo"><h4>Purplle</h4><p>Beauty at great prices</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.sephora.com" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#222,#444)">⬛</div><div class="appInfo"><h4>Sephora</h4><p>Luxury global beauty</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.myntra.com/beauty" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#FF3F6C,#FF6B9D)">🛍️</div><div class="appInfo"><h4>Myntra Beauty</h4><p>Fashion-forward skincare</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.mamaearth.in" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#4CAF50,#2E7D32)">🌿</div><div class="appInfo"><h4>Mamaearth</h4><p>Natural toxin-free care</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.minimalist.in" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#607D8B,#455A64)">🧪</div><div class="appInfo"><h4>Minimalist</h4><p>Science-backed serums</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.amazon.in/s?k=skincare" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#FF9900,#E47911)">📦</div><div class="appInfo"><h4>Amazon Beauty</h4><p>Huge selection & deals</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+        <a href="https://www.flipkart.com/beauty-personal-care" target="_blank" class="appRow"><div class="appIco" style="background:linear-gradient(135deg,#2874F0,#1565C0)">🔵</div><div class="appInfo"><h4>Flipkart Beauty</h4><p>Best prices guaranteed</p></div><i class="fas fa-external-link-alt appArr"></i></a>
+    </div>
+</div></div>
+
+<div class="mOverlay" id="mAcc"><div class="mBox">
+    <button class="mClose" onclick="closeModal('mAcc')">✕</button>
+    <h2 class="mTitle">💍 Choose an Accessories Website</h2><p class="mSub">Select a site — opens in a new tab ✨</p>
+    <div class="siteList">
+        <div class="siteRow" onclick="goSite('https://www.myntra.com/accessories')"><div class="siteIco" style="background:linear-gradient(135deg,#FF3F6C,#FF6B9D)">🛍️</div><div class="siteInfo"><h4>Myntra Accessories</h4><p>Bags, jewellery, belts & more</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.ajio.com/accessories')"><div class="siteIco" style="background:linear-gradient(135deg,#FF6A00,#EE0979)">🎀</div><div class="siteInfo"><h4>Ajio Accessories</h4><p>Trendy picks every season</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.amazon.in/s?k=accessories')"><div class="siteIco" style="background:linear-gradient(135deg,#FF9900,#E47911)">📦</div><div class="siteInfo"><h4>Amazon Accessories</h4><p>Millions of options & deals</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.nykaa.com/accessories')"><div class="siteIco" style="background:linear-gradient(135deg,#FF527B,#FF2D55)">💄</div><div class="siteInfo"><h4>Nykaa Fashion</h4><p>Chic accessories & jewels</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.tatacliq.com/accessories')"><div class="siteIco" style="background:linear-gradient(135deg,#1565C0,#0D47A1)">💎</div><div class="siteInfo"><h4>Tata CLiQ Luxury</h4><p>Premium designer accessories</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.meesho.com')"><div class="siteIco" style="background:linear-gradient(135deg,#A020F0,#6A0DAD)">💜</div><div class="siteInfo"><h4>Meesho Accessories</h4><p>Affordable trendy picks</p></div><button class="openBtn">Open ↗</button></div>
+    </div>
+</div></div>
+
+<div class="mOverlay" id="mElec"><div class="mBox">
+    <button class="mClose" onclick="closeModal('mElec')">✕</button>
+    <h2 class="mTitle">💻 Electronics Stores</h2><p class="mSub">Opens in a new tab ✨</p>
+    <div class="siteList">
+        <div class="siteRow" onclick="goSite('https://www.amazon.in/electronics')"><div class="siteIco" style="background:linear-gradient(135deg,#FF9900,#E47911)">📦</div><div class="siteInfo"><h4>Amazon Electronics</h4><p>Best deals on gadgets</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.flipkart.com/mobiles-tablets')"><div class="siteIco" style="background:linear-gradient(135deg,#2874F0,#1A5DC8)">🔵</div><div class="siteInfo"><h4>Flipkart Electronics</h4><p>Phones, laptops & more</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.croma.com')"><div class="siteIco" style="background:linear-gradient(135deg,#00C853,#1B5E20)">🟢</div><div class="siteInfo"><h4>Croma</h4><p>India's electronics giant</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.reliancedigital.in')"><div class="siteIco" style="background:linear-gradient(135deg,#1565C0,#0D47A1)">📱</div><div class="siteInfo"><h4>Reliance Digital</h4><p>Smart tech at great prices</p></div><button class="openBtn">Open ↗</button></div>
+    </div>
+</div></div>
+
+<div class="mOverlay" id="mFood"><div class="mBox">
+    <button class="mClose" onclick="closeModal('mFood')">✕</button>
+    <h2 class="mTitle">🍰 Food & Beverages</h2><p class="mSub">Order food or shop gourmet ✨</p>
+    <div class="siteList">
+        <div class="siteRow" onclick="goSite('https://www.swiggy.com')"><div class="siteIco" style="background:linear-gradient(135deg,#FC8019,#E87013)">🛵</div><div class="siteInfo"><h4>Swiggy</h4><p>Food delivery at doorstep</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.zomato.com')"><div class="siteIco" style="background:linear-gradient(135deg,#E23744,#C0392B)">🍴</div><div class="siteInfo"><h4>Zomato</h4><p>Restaurants & fast delivery</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.bigbasket.com')"><div class="siteIco" style="background:linear-gradient(135deg,#84C225,#5D9B16)">🛒</div><div class="siteInfo"><h4>BigBasket</h4><p>Grocery & gourmet online</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.blinkit.com')"><div class="siteIco" style="background:linear-gradient(135deg,#FFD700,#FFA000)">⚡</div><div class="siteInfo"><h4>Blinkit</h4><p>10-min grocery delivery</p></div><button class="openBtn">Open ↗</button></div>
+    </div>
+</div></div>
+
+<div class="mOverlay" id="mFash"><div class="mBox">
+    <button class="mClose" onclick="closeModal('mFash')">✕</button>
+    <h2 class="mTitle">👗 Fashion Stores</h2><p class="mSub">Shop the latest trends ✨</p>
+    <div class="siteList">
+        <div class="siteRow" onclick="goSite('https://www.myntra.com')"><div class="siteIco" style="background:linear-gradient(135deg,#FF3F6C,#FF6B9D)">🛍️</div><div class="siteInfo"><h4>Myntra</h4><p>India's biggest fashion app</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.ajio.com')"><div class="siteIco" style="background:linear-gradient(135deg,#FF6A00,#EE0979)">🎀</div><div class="siteInfo"><h4>Ajio</h4><p>Curated fashion & lifestyle</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.meesho.com')"><div class="siteIco" style="background:linear-gradient(135deg,#A020F0,#6A0DAD)">💜</div><div class="siteInfo"><h4>Meesho</h4><p>Affordable trendy fashion</p></div><button class="openBtn">Open ↗</button></div>
+        <div class="siteRow" onclick="goSite('https://www.zara.com/in')"><div class="siteIco" style="background:linear-gradient(135deg,#1A1A1A,#444)">⬛</div><div class="siteInfo"><h4>Zara India</h4><p>International luxury fashion</p></div><button class="openBtn">Open ↗</button></div>
+    </div>
+</div></div>
+
+<script>
+/* ══════════════════════════════════════
+   COLOUR PALETTES & LOGO ENGINE
+══════════════════════════════════════ */
+const PALETTES = {
+    rose:['#C0392B','#E74C3C','#F1948A'],ocean:['#1A6FA3','#2980B9','#7FB3D3'],
+    forest:['#1E8449','#27AE60','#76C893'],sunset:['#BA4A00','#E67E22','#F0A265'],
+    midnight:['#1B2631','#2C3E50','#5D6D7E'],candy:['#C0392B','#E91E63','#F48FB1'],
+    earth:['#6E2F00','#873600','#B87333'],auto:null
+};
+const STYLE_PALETTE={'Modern Minimal':'ocean','Vintage Retro':'earth','Bold Geometric':'midnight','Elegant Luxury':'rose','Playful & Fun':'candy','Nature Organic':'forest','Dark & Edgy':'midnight','Soft Pastel':'candy'};
+const STYLE_SHAPE={'Modern Minimal':'diamond','Vintage Retro':'badge','Bold Geometric':'hexagon','Elegant Luxury':'crest','Playful & Fun':'burst','Nature Organic':'leaf','Dark & Edgy':'hexagon','Soft Pastel':'circle'};
+
+// Industry-specific illustrated logo drawers
+const INDUSTRY_ILLUSTRATIONS = {
+    'Fashion & Apparel': (c, size, name) => drawFashionLogo(c, size, name),
+    'Watches & Luxury':  (c, size, name) => drawWatchLogo(c, size, name),
+    'Tech & Digital':    (c, size, name) => drawTechLogo(c, size, name),
+    'Skincare & Beauty': (c, size, name) => drawBeautyLogo(c, size, name),
+    'Food & Beverages':  (c, size, name) => drawFoodLogo(c, size, name),
+    'Wellness & Fitness':(c, size, name) => drawFitnessLogo(c, size, name),
+    'Automobiles':       (c, size, name) => drawAutoLogo(c, size, name),
+    'Photography':       (c, size, name) => drawPhotoLogo(c, size, name),
+};
+
+function getColors(colorKey,style){
+    if(colorKey&&colorKey!=='auto'&&PALETTES[colorKey])return PALETTES[colorKey];
+    const sk=STYLE_PALETTE[style];if(sk&&PALETTES[sk])return PALETTES[sk];
+    const h=Math.floor(Math.random()*360);return[`hsl(${h},72%,38%)`,`hsl(${h},65%,52%)`,`hsl(${h},55%,68%)`];
+}
+
+function drawFashionLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'fg'+Math.random().toString(36).substr(2,6);
+    // Elegant fashion silhouette - stylish woman figure
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="${gid}1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/>
+            </linearGradient>
+            <linearGradient id="${gid}2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${c2}"/><stop offset="100%" stop-color="${c3}"/>
+            </linearGradient>
+        </defs>
+        <!-- Background circle -->
+        <circle cx="${H}" cy="${H}" r="${H*0.92}" fill="url(#${gid}1)"/>
+        <!-- Elegant dress silhouette -->
+        <!-- Head -->
+        <circle cx="${H}" cy="${H*0.28}" r="${H*0.1}" fill="white" opacity="0.95"/>
+        <!-- Neck -->
+        <rect x="${H-H*0.035}" y="${H*0.38}" width="${H*0.07}" height="${H*0.1}" fill="white" opacity="0.9" rx="3"/>
+        <!-- Shoulders / top -->
+        <path d="M${H*0.55} ${H*0.48} Q${H*0.72} ${H*0.44} ${H*0.82} ${H*0.52} L${H*0.88} ${H*0.72} Q${H*0.75} ${H*0.68} ${H} ${H*0.66} Q${H*1.25} ${H*0.68} ${H*1.12} ${H*0.72} L${H*1.18} ${H*0.52} Q${H*1.28} ${H*0.44} ${H*1.45} ${H*0.48}" fill="none" stroke="white" stroke-width="${size*0.013}" opacity="0.5"/>
+        <!-- Dress body - elegant A-line -->
+        <path d="M${H*0.68} ${H*0.48} L${H*0.6} ${H*0.68} Q${H*0.42} ${H*0.85} ${H*0.38} ${H*1.1} L${H*0.32} ${H*1.62} L${H*1.68} ${H*1.62} L${H*1.62} ${H*1.1} Q${H*1.58} ${H*0.85} ${H*1.4} ${H*0.68} L${H*1.32} ${H*0.48} Q${H} ${H*0.38} ${H*0.68} ${H*0.48}Z" fill="white" opacity="0.92"/>
+        <!-- Waist detail -->
+        <ellipse cx="${H}" cy="${H*0.75}" rx="${H*0.19}" ry="${H*0.055}" fill="url(#${gid}2)" opacity="0.6"/>
+        <!-- Dress shimmer lines -->
+        <line x1="${H*0.55}" y1="${H*0.85}" x2="${H*0.45}" y2="${H*1.55}" stroke="${c3}" stroke-width="${size*0.007}" opacity="0.35"/>
+        <line x1="${H*1.45}" y1="${H*0.85}" x2="${H*1.55}" y2="${H*1.55}" stroke="${c3}" stroke-width="${size*0.007}" opacity="0.35"/>
+        <!-- Hair detail -->
+        <path d="M${H*0.88} ${H*0.22} Q${H*0.82} ${H*0.14} ${H} ${H*0.16} Q${H*1.18} ${H*0.14} ${H*1.12} ${H*0.22}" fill="${c3}" opacity="0.8"/>
+        <!-- Brand name -->
+        <text x="${H}" y="${H*1.78}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*0.1}" font-weight="700" fill="white" letter-spacing="${size*0.005}" opacity="0.95">${name.substring(0,8).toUpperCase()}</text>
+    </svg>`;
+}
+
+function drawWatchLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'wg'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="${gid}b" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/>
+            </linearGradient>
+            <radialGradient id="${gid}f" cx="35%" cy="35%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="${c2}" stop-opacity="0"/>
+            </radialGradient>
+        </defs>
+        <!-- Strap top -->
+        <rect x="${H*0.78}" y="${H*0.06}" width="${H*0.44}" height="${H*0.38}" rx="${H*0.06}" fill="${c1}" opacity="0.9"/>
+        <!-- Strap bottom -->
+        <rect x="${H*0.78}" y="${H*1.56}" width="${H*0.44}" height="${H*0.38}" rx="${H*0.06}" fill="${c1}" opacity="0.9"/>
+        <!-- Watch case outer -->
+        <rect x="${H*0.3}" y="${H*0.35}" width="${H*1.4}" height="${H*1.3}" rx="${H*0.22}" fill="url(#${gid}b)"/>
+        <!-- Watch case bezel -->
+        <rect x="${H*0.36}" y="${H*0.41}" width="${H*1.28}" height="${H*1.18}" rx="${H*0.18}" fill="${c2}" opacity="0.6"/>
+        <!-- Watch face -->
+        <rect x="${H*0.42}" y="${H*0.48}" width="${H*1.16}" height="${H*1.04}" rx="${H*0.14}" fill="#0a0a14"/>
+        <!-- Dial glow -->
+        <rect x="${H*0.42}" y="${H*0.48}" width="${H*1.16}" height="${H*1.04}" rx="${H*0.14}" fill="url(#${gid}f)"/>
+        <!-- Hour markers -->
+        ${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>{
+            const a = i*30*Math.PI/180 - Math.PI/2;
+            const r1 = H*0.43; const r2 = H*0.5;
+            const x1=H+r1*Math.cos(a); const y1=H+r1*Math.sin(a);
+            const x2=H+r2*Math.cos(a); const y2=H+r2*Math.sin(a);
+            const sw = i%3===0 ? size*0.016 : size*0.008;
+            return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c3}" stroke-width="${sw}" opacity="0.9"/>`;
+        }).join('')}
+        <!-- Hour hand -->
+        <line x1="${H}" y1="${H}" x2="${H+H*0.28*Math.cos(-Math.PI/3)}" y2="${H+H*0.28*Math.sin(-Math.PI/3)}" stroke="white" stroke-width="${size*0.022}" stroke-linecap="round" opacity="0.95"/>
+        <!-- Minute hand -->
+        <line x1="${H}" y1="${H}" x2="${H+H*0.38*Math.cos(-Math.PI*1.1)}" y2="${H+H*0.38*Math.sin(-Math.PI*1.1)}" stroke="${c3}" stroke-width="${size*0.015}" stroke-linecap="round" opacity="0.9"/>
+        <!-- Center dot -->
+        <circle cx="${H}" cy="${H}" r="${H*0.05}" fill="${c3}"/>
+        <!-- Crown -->
+        <rect x="${H*1.72}" y="${H*0.82}" width="${H*0.12}" height="${H*0.36}" rx="${H*0.05}" fill="${c1}"/>
+        <!-- Brand name on dial -->
+        <text x="${H}" y="${H*1.34}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*0.088}" font-weight="700" fill="${c3}" letter-spacing="${size*0.004}">${name.substring(0,7).toUpperCase()}</text>
+        <text x="${H}" y="${H*1.52}" text-anchor="middle" font-family="Georgia,serif" font-size="${size*0.05}" fill="rgba(255,255,255,0.5)" letter-spacing="${size*0.003}">SWISS MADE</text>
+    </svg>`;
+}
+
+function drawTechLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'tg'+Math.random().toString(36).substr(2,6);
+    const words = name.trim().split(/\s+/);
+    const initials = words.length>=2 ? (words[0][0]+words[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <rect x="${H*0.1}" y="${H*0.1}" width="${H*1.8}" height="${H*1.8}" rx="${H*0.28}" fill="url(#${gid})"/>
+        <!-- Grid dots -->
+        ${[.3,.5,.7,.9,.3,.5,.7,.9].map((x,i)=>{const row=Math.floor(i/4);const col=i%4;return`<circle cx="${H*col*.45+H*.35}" cy="${H*row*.45+H*.35}" r="${size*.018}" fill="rgba(255,255,255,0.2)"/>`;}).join('')}
+        <!-- Hexagon accent -->
+        <polygon points="${[0,1,2,3,4,5].map(i=>{const a=Math.PI/3*i-Math.PI/6;return`${H+H*.7*Math.cos(a)},${H+H*.7*Math.sin(a)}`;}).join(' ')}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="${size*.012}"/>
+        <text x="${H}" y="${H+size*.13}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*.32}" font-weight="700" fill="white">${initials}</text>
+    </svg>`;
+}
+
+function drawBeautyLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'bg'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <circle cx="${H}" cy="${H}" r="${H*.9}" fill="url(#${gid})"/>
+        <!-- Flower petals -->
+        ${[0,72,144,216,288].map(deg=>{
+            const r=deg*Math.PI/180;
+            const px=H+H*.42*Math.cos(r); const py=H+H*.42*Math.sin(r);
+            return`<ellipse cx="${px}" cy="${py}" rx="${H*.22}" ry="${H*.13}" transform="rotate(${deg} ${px} ${py})" fill="rgba(255,255,255,0.3)"/>`;
+        }).join('')}
+        <!-- Center -->
+        <circle cx="${H}" cy="${H}" r="${H*.28}" fill="rgba(255,255,255,.92)"/>
+        <text x="${H}" y="${H+size*.06}" text-anchor="middle" font-family="Sacramento,cursive" font-size="${size*.2}" fill="${c1}">${name.charAt(0)}</text>
+        <text x="${H}" y="${H*1.75}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*.085}" font-weight="700" fill="white" letter-spacing="${size*.004}">${name.substring(0,9).toUpperCase()}</text>
+    </svg>`;
+}
+
+function drawFoodLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'ffg'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <circle cx="${H}" cy="${H}" r="${H*.9}" fill="url(#${gid})"/>
+        <!-- Fork -->
+        <line x1="${H*.65}" y1="${H*.35}" x2="${H*.65}" y2="${H*1.65}" stroke="white" stroke-width="${size*.025}" stroke-linecap="round" opacity=".85"/>
+        <line x1="${H*.65}" y1="${H*.35}" x2="${H*.65}" y2="${H*.7}" stroke="white" stroke-width="${size*.018}" opacity=".6"/>
+        <!-- Knife -->
+        <line x1="${H*1.35}" y1="${H*.35}" x2="${H*1.35}" y2="${H*1.65}" stroke="white" stroke-width="${size*.025}" stroke-linecap="round" opacity=".85"/>
+        <path d="M${H*1.35} ${H*.35} Q${H*1.52} ${H*.55} ${H*1.35} ${H*.75}" fill="white" opacity=".7"/>
+        <!-- Plate -->
+        <circle cx="${H}" cy="${H}" r="${H*.38}" fill="rgba(255,255,255,.25)" stroke="white" stroke-width="${size*.016}" opacity=".8"/>
+        <text x="${H}" y="${H*1.78}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*.09}" font-weight="700" fill="white" letter-spacing="${size*.003}">${name.substring(0,9).toUpperCase()}</text>
+    </svg>`;
+}
+
+function drawFitnessLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'fitg'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <polygon points="${[0,1,2,3,4,5,6,7].map(i=>{const a=Math.PI/4*i-Math.PI/8;const r=i%2?H*.6:H*.88;return`${H+r*Math.cos(a)},${H+r*Math.sin(a)}`;}).join(' ')}" fill="url(#${gid})"/>
+        <!-- Dumbbell -->
+        <line x1="${H*.42}" y1="${H}" x2="${H*1.58}" y2="${H}" stroke="white" stroke-width="${size*.038}" stroke-linecap="round" opacity=".9"/>
+        <rect x="${H*.32}" y="${H*.76}" width="${H*.2}" height="${H*.48}" rx="${H*.06}" fill="white" opacity=".9"/>
+        <rect x="${H*.22}" y="${H*.82}" width="${H*.16}" height="${H*.36}" rx="${H*.05}" fill="white" opacity=".8"/>
+        <rect x="${H*1.48}" y="${H*.76}" width="${H*.2}" height="${H*.48}" rx="${H*.06}" fill="white" opacity=".9"/>
+        <rect x="${H*1.62}" y="${H*.82}" width="${H*.16}" height="${H*.36}" rx="${H*.05}" fill="white" opacity=".8"/>
+        <text x="${H}" y="${H*1.78}" text-anchor="middle" font-family="Playfair Display,serif" font-size="${size*.085}" font-weight="700" fill="white">${name.substring(0,8).toUpperCase()}</text>
+    </svg>`;
+}
+
+function drawAutoLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'ag'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <polygon points="${[0,1,2,3,4,5].map(i=>{const a=Math.PI/3*i-Math.PI/6;return`${H+H*.88*Math.cos(a)},${H+H*.88*Math.sin(a)}`;}).join(' ')}" fill="url(#${gid})"/>
+        <!-- Car silhouette -->
+        <path d="M${H*.32} ${H*1.12} L${H*.42} ${H*.78} Q${H*.5} ${H*.56} ${H*.72} ${H*.52} L${H*1.28} ${H*.52} Q${H*1.5} ${H*.56} ${H*1.58} ${H*.78} L${H*1.68} ${H*1.12} Z" fill="white" opacity=".92"/>
+        <rect x="${H*.36}" y="${H*1.12}" width="${H*1.28}" height="${H*.24}" rx="${H*.06}" fill="white" opacity=".85"/>
+        <!-- Wheels -->
+        <circle cx="${H*.6}" cy="${H*1.36}" r="${H*.15}" fill="${c2}" stroke="white" stroke-width="${size*.015}"/>
+        <circle cx="${H*1.4}" cy="${H*1.36}" r="${H*.15}" fill="${c2}" stroke="white" stroke-width="${size*.015}"/>
+        <circle cx="${H*.6}" cy="${H*1.36}" r="${H*.06}" fill="white"/>
+        <circle cx="${H*1.4}" cy="${H*1.36}" r="${H*.06}" fill="white"/>
+        <!-- Windows -->
+        <path d="M${H*.62} ${H*.56} L${H*.56} ${H*.8} L${H*.94} ${H*.8} L${H*.94} ${H*.56}Z" fill="${c1}" opacity=".6"/>
+        <path d="M${H*1.06} ${H*.56} L${H*1.06} ${H*.8} L${H*1.44} ${H*.8} L${H*1.38} ${H*.56}Z" fill="${c1}" opacity=".6"/>
+    </svg>`;
+}
+
+function drawPhotoLogo(c, size, name) {
+    const [c1,c2,c3] = c;
+    const H = size/2;
+    const gid = 'pg'+Math.random().toString(36).substr(2,6);
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient></defs>
+        <rect x="${H*.12}" y="${H*.12}" width="${H*1.76}" height="${H*1.76}" rx="${H*.22}" fill="url(#${gid})"/>
+        <!-- Camera body -->
+        <rect x="${H*.28}" y="${H*.52}" width="${H*1.44}" height="${H*.96}" rx="${H*.12}" fill="rgba(255,255,255,.88)"/>
+        <!-- Viewfinder bump -->
+        <rect x="${H*.7}" y="${H*.38}" width="${H*.6}" height="${H*.22}" rx="${H*.08}" fill="rgba(255,255,255,.8)"/>
+        <!-- Lens -->
+        <circle cx="${H}" cy="${H}" r="${H*.3}" fill="${c2}" stroke="rgba(255,255,255,.5)" stroke-width="${size*.016}"/>
+        <circle cx="${H}" cy="${H}" r="${H*.2}" fill="${c1}" opacity=".7"/>
+        <circle cx="${H}" cy="${H}" r="${H*.11}" fill="rgba(255,255,255,.15)"/>
+        <!-- Flash -->
+        <circle cx="${H*0.48}" cy="${H*0.66}" r="${H*.08}" fill="${c3}" opacity=".9"/>
+        <!-- Shutter button -->
+        <circle cx="${H*1.48}" cy="${H*.65}" r="${H*.07}" fill="${c2}" opacity=".7"/>
+    </svg>`;
+}
+
+function makeLogo(name,style,colorKey,size,ind,logoType){
+    size=size||220;
+    const colors=getColors(colorKey,style);
+    // For illustrated type with industry
+    if((logoType==='illustrated'||logoType==='mascot') && ind && INDUSTRY_ILLUSTRATIONS[ind]){
+        return INDUSTRY_ILLUSTRATIONS[ind](colors, size, name);
+    }
+    // Wordmark
+    if(logoType==='wordmark'){
+        return makeWordmarkLogo(name,colors,size);
+    }
+    // Classic initials (original logic)
+    return makeClassicLogo(name,style,colorKey,size,colors);
+}
+
+function makeWordmarkLogo(name,colors,size){
+    const [c1,c2,c3]=colors;
+    const H=size/2;
+    const gid='wm'+Math.random().toString(36).substr(2,6);
+    const words=name.trim().split(/\s+/);
+    const mainWord=words[0]||name;
+    const subWord=words[1]||'';
+    return`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/></linearGradient>
+        </defs>
+        <rect x="0" y="0" width="${size}" height="${size}" rx="${H*.25}" fill="url(#${gid})"/>
+        <line x1="${H*.2}" y1="${H*1.15}" x2="${H*1.8}" y2="${H*1.15}" stroke="rgba(255,255,255,.4)" stroke-width="${size*.006}"/>
+        <text x="${H}" y="${subWord?H*.95:H*1.12}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${size*(mainWord.length>7?.17:.22)}" font-weight="700" fill="white" letter-spacing="${size*.008}">${mainWord.toUpperCase()}</text>
+        ${subWord?`<text x="${H}" y="${H*1.32}" text-anchor="middle" font-family="Quicksand,sans-serif" font-size="${size*.1}" font-weight="500" fill="rgba(255,255,255,0.75)" letter-spacing="${size*.018}">${subWord.toUpperCase()}</text>`:''}
+    </svg>`;
+}
+
+function makeClassicLogo(name,style,colorKey,size,colors){
+    const H=size/2; const r=H*.88;
+    const words=name.trim().split(/\s+/);let initials;
+    if(words.length>=2)initials=(words[0][0]+words[1][0]).toUpperCase();
+    else if(name.length>=2)initials=(name[0]+name[Math.ceil(name.length/2)]).toUpperCase();
+    else initials=name[0].toUpperCase()+name[0].toUpperCase();
+    const[c1,c2,c3]=colors;
+    const shape=STYLE_SHAPE[style]||['circle','hexagon','diamond','badge','crest','burst'][Math.floor(Math.random()*6)];
+    const gid='G'+Math.random().toString(36).substr(2,8);
+    let bg='',deco='';
+    if(shape==='circle'){bg=`<circle cx="${H}" cy="${H}" r="${r}" fill="url(#${gid})"/><circle cx="${H}" cy="${H}" r="${r*.8}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="${size*.013}"/><circle cx="${H}" cy="${H}" r="${r*.93}" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="${size*.007}"/>`;deco=`<circle cx="${H*.42}" cy="${H*.42}" r="${size*.038}" fill="rgba(255,255,255,.45)"/><circle cx="${H*1.72}" cy="${H*1.65}" r="${size*.024}" fill="rgba(255,255,255,.3)"/>`;}
+    else if(shape==='hexagon'){const hex=(sc)=>[0,1,2,3,4,5].map(i=>{const a=Math.PI/3*i-Math.PI/6;return`${H+sc*Math.cos(a)},${H+sc*Math.sin(a)}`;}).join(' ');bg=`<polygon points="${hex(r)}" fill="url(#${gid})"/><polygon points="${hex(r*.81)}" fill="none" stroke="rgba(255,255,255,.32)" stroke-width="${size*.012}"/>`;deco=`<line x1="${H}" y1="${H-r*.5}" x2="${H}" y2="${H+r*.5}" stroke="rgba(255,255,255,.15)" stroke-width="${size*.007}"/>`;}
+    else if(shape==='diamond'){const m=size*.1,M=size*.9;bg=`<polygon points="${H},${m} ${M},${H} ${H},${M} ${m},${H}" fill="url(#${gid})"/><polygon points="${H},${H*.28} ${H*1.72},${H} ${H},${H*1.72} ${H*.28},${H}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="${size*.011}"/>`;deco='';}
+    else if(shape==='badge'){bg=`<path d="M${H} ${H*.12} L${H*1.9} ${H*.48} L${H*1.9} ${H*1.52} L${H} ${H*1.88} L${H*.1} ${H*1.52} L${H*.1} ${H*.48}Z" fill="url(#${gid})"/><path d="M${H} ${H*.25} L${H*1.77} ${H*.56} L${H*1.77} ${H*1.44} L${H} ${H*1.75} L${H*.23} ${H*1.44} L${H*.23} ${H*.56}Z" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="${size*.011}"/>`;deco=`<circle cx="${H}" cy="${H*.3}" r="${size*.03}" fill="rgba(255,255,255,.5)"/>`;}
+    else if(shape==='crest'){bg=`<path d="M${H} ${H*.1} L${H*1.92} ${H*.42} L${H*1.92} ${H*1.2} Q${H*1.92} ${H*1.72} ${H} ${H*1.9} Q${H*.08} ${H*1.72} ${H*.08} ${H*1.2} L${H*.08} ${H*.42}Z" fill="url(#${gid})"/>`;deco=`<line x1="${H*.4}" y1="${H*.7}" x2="${H*1.6}" y2="${H*.7}" stroke="rgba(255,255,255,.25)" stroke-width="${size*.009}"/>`;}
+    else if(shape==='burst'){const pts8=(R,r2)=>{let p='';for(let i=0;i<16;i++){const a=Math.PI/8*i-Math.PI/2;const rad=i%2===0?R:r2;p+=`${H+rad*Math.cos(a)},${H+rad*Math.sin(a)} `;}return p.trim();};bg=`<polygon points="${pts8(r,r*.56)}" fill="url(#${gid})"/>`;deco=`<circle cx="${H}" cy="${H}" r="${r*.26}" fill="rgba(255,255,255,.14)"/>`;}
+    else{bg=`<ellipse cx="${H}" cy="${H}" rx="${r*.88}" ry="${r}" fill="url(#${gid})"/>`;deco='';}
+    const fsize=initials.length===1?size*.38:size*.3;const ls=initials.length===1?0:size*.014;
+    return`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="${c1}"/><stop offset="55%" stop-color="${c2}"/><stop offset="100%" stop-color="${c3}"/></linearGradient><filter id="sf${gid}"><feDropShadow dx="0" dy="${size*.011}" stdDeviation="${size*.024}" flood-color="${c1}" flood-opacity=".55"/></filter></defs><g filter="url(#sf${gid})">${bg}</g>${deco}<text x="${H}" y="${H+fsize*.37}" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-size="${fsize}" font-weight="700" fill="white" letter-spacing="${ls}">${initials}</text></svg>`;
+}
+
+/* ══════════════════════════════════════
+   LOGO TYPE SELECTION
+══════════════════════════════════════ */
+let currentLogoType = 'classic';
+const PAID_TYPES = ['illustrated','mascot'];
+const TYPE_PRICES = {illustrated:'₹499',mascot:'₹799'};
+
+function selectLogoType(type, el){
+    currentLogoType = type;
+    document.querySelectorAll('.logoTypeBtn').forEach(b=>b.classList.remove('sel'));
+    el.classList.add('sel');
+    const descGroup = document.getElementById('illustrationDescGroup');
+    descGroup.style.display = (type==='illustrated'||type==='mascot') ? 'block' : 'none';
+    if(PAID_TYPES.includes(type)){
+        document.getElementById('pricingAmount').textContent = TYPE_PRICES[type];
+    }
+}
+
+function updateIndustryHint(){
+    const ind = document.getElementById('fInd').value;
+    const hint = document.getElementById('industryHint');
+    const hints = {
+        'Fashion & Apparel':'👗 We\'ll generate a stylish fashion silhouette logo for you!',
+        'Watches & Luxury':'⌚ A luxury watch illustration will be your logo!',
+        'Skincare & Beauty':'🌸 A beautiful floral beauty logo awaits!',
+        'Food & Beverages':'🍽️ A chef-style illustrated logo will be created!',
+        'Wellness & Fitness':'💪 A bold fitness/dumbbell logo for your brand!',
+        'Automobiles':'🚗 A sleek car silhouette logo coming up!',
+        'Photography':'📷 A camera-themed professional logo!',
+    };
+    if(ind && hints[ind] && (currentLogoType==='illustrated'||currentLogoType==='mascot')){
+        hint.textContent = hints[ind];
+        hint.style.display = 'block';
+    } else {
+        hint.style.display = 'none';
+    }
+}
+
+/* ══════════════════════════════════════
+   LOCAL STORAGE
+══════════════════════════════════════ */
+const DB={get:()=>JSON.parse(localStorage.getItem('bc_brands')||'[]'),save:(d)=>localStorage.setItem('bc_brands',JSON.stringify(d)),add:(b)=>{const d=DB.get();d.unshift(b);if(d.length>50)d.pop();DB.save(d);},clear:()=>localStorage.removeItem('bc_brands')};
+
+/* ══════════════════════════════════════
+   GENERATOR
+══════════════════════════════════════ */
+let selectedTier = 'pro';
+function selectTier(t){ selectedTier=t; }
+function proceedPayment(){
+    closeModal('mPurchase');
+    alert(`💳 Redirecting to payment for ${selectedTier} package...\n\n(This is a demo — payment gateway would open here ✨)`);
+}
+
+function _doGenerate(){
+    const name=(document.getElementById('fName').value||'').trim();
+    const style=document.getElementById('fStyle').value||'';
+    const ind=document.getElementById('fInd').value||'';
+    const aud=document.getElementById('fAud').value.trim()||'';
+    const color=document.getElementById('fColor').value||'auto';
+    const tag=document.getElementById('fTag').value.trim()||'';
+    if(!name){document.getElementById('fName').style.borderColor='#FC8181';document.getElementById('fName').focus();return false;}
+    document.getElementById('fName').style.borderColor='';
+
+    const bigSvg=makeLogo(name,style,color,220,ind,currentLogoType);
+    const miniSvg=makeLogo(name,style,color,80,ind,currentLogoType);
+    document.getElementById('svgHolder').innerHTML=bigSvg;
+    document.getElementById('brandTagline').textContent=tag?`"${tag}"`:name;
+    const chips=[];if(style)chips.push('🎨 '+style);if(ind)chips.push('🏷️ '+ind);if(aud)chips.push('👥 '+aud);
+    document.getElementById('tagsRow').innerHTML=chips.map(c=>`<span class="tagChip">${c}</span>`).join('');
+
+    // Show pricing for paid types or illustrated industry
+    const isPaid = PAID_TYPES.includes(currentLogoType) || (ind && INDUSTRY_ILLUSTRATIONS[ind]);
+    const priceCard = document.getElementById('pricingCard');
+    if(isPaid){ 
+        priceCard.style.display='block';
+        if(!PAID_TYPES.includes(currentLogoType)) document.getElementById('pricingAmount').textContent='₹499';
+    } else {
+        priceCard.style.display='none';
+    }
+
+    const box=document.getElementById('resultBox');box.classList.remove('show');void box.offsetWidth;box.classList.add('show');
+    DB.add({id:Date.now(),name,style,ind,aud,color,tag,miniSvg,logoType:currentLogoType});updateStatus();
+    return true;
+}
+
+function generateBrand(){
+    if(_doGenerate()) launchConfetti(55);
+}
+
+/* ══════════════════════════════════════
+   PORTAL
+══════════════════════════════════════ */
+const SAMPLES=[{name:'GlowVita',style:'Elegant Luxury',ind:'Skincare & Beauty',color:'rose'},{name:'UrbanNest',style:'Modern Minimal',ind:'Home & Decor',color:'ocean'},{name:'LeafCo',style:'Nature Organic',ind:'Wellness & Fitness',color:'forest'},{name:'BoltTech',style:'Bold Geometric',ind:'Tech & Digital',color:'midnight'},{name:'CandyDrop',style:'Playful & Fun',ind:'Food & Beverages',color:'candy'},{name:'AuraWear',style:'Vintage Retro',ind:'Fashion & Apparel',color:'earth'}];
+function renderPortal(){
+    const stored=DB.get();document.getElementById('storedBadge').textContent=stored.length;
+    const sg=document.getElementById('storedGrid');
+    if(!stored.length){sg.innerHTML=`<div class="emptyState"><div class="eIcon">📭</div><h3 style="font-size:18px;color:#718096">No stored logos yet</h3><p style="margin-top:6px;font-size:14px">Generate a brand above — it will appear here!</p></div>`;}
+    else{sg.innerHTML=stored.map(b=>`<div class="bCard" title="${b.name}">${b.miniSvg||''}<div class="bName">${b.name}</div><div class="bStyle">${b.style||'✨'}</div><div class="bInd">${b.ind||'—'}</div></div>`).join('');}
+    document.getElementById('sampleGrid').innerHTML=SAMPLES.map(s=>{const svg=makeLogo(s.name,s.style,s.color,80,s.ind,'illustrated');return`<div class="bCard">${svg}<div class="bName">${s.name}</div><div class="bStyle">${s.style}</div><div class="bInd">${s.ind}</div></div>`;}).join('');
+}
+function clearStored(){if(!DB.get().length){alert('No stored logos to clear ✨');return;}if(confirm('🗑️ Clear all your stored logos?')){DB.clear();renderPortal();updateStatus();}}
+function updateStatus(){document.getElementById('bCount').textContent=DB.get().length;}
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+function goPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    document.getElementById('nb-'+id).classList.add('active');
+    if(id==='portal')renderPortal();
+}
+
+/* ══════════════════════════════════════
+   MODALS
+══════════════════════════════════════ */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function goSite(url){window.open(url,'_blank');}
+document.querySelectorAll('.mOverlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+/* ══════════════════════════════════════
+   CAMERA SYSTEM — Skin & Scan
+══════════════════════════════════════ */
+let skinStream = null, scanStream = null;
+let skinFacingMode = 'user', scanFacingMode = 'environment';
+
+function switchSkinInput(mode){
+    document.getElementById('skinToggleUpload').classList.toggle('active', mode==='upload');
+    document.getElementById('skinToggleCamera').classList.toggle('active', mode==='camera');
+    document.getElementById('skinUploadSection').style.display = mode==='upload'?'block':'none';
+    if(mode==='camera'){
+        document.getElementById('skinCameraBox').classList.add('show');
+        startCamera('skin');
+    } else {
+        document.getElementById('skinCameraBox').classList.remove('show');
+        stopCamera('skin');
+    }
+}
+
+function switchScanInput(mode){
+    document.getElementById('scanToggleUpload').classList.toggle('active', mode==='upload');
+    document.getElementById('scanToggleCamera').classList.toggle('active', mode==='camera');
+    document.getElementById('scanUploadSection').style.display = mode==='upload'?'block':'none';
+    if(mode==='camera'){
+        document.getElementById('scanCameraBox').classList.add('show');
+        startCamera('scan');
+    } else {
+        document.getElementById('scanCameraBox').classList.remove('show');
+        stopCamera('scan');
+    }
+}
+
+async function startCamera(which){
+    const videoEl = document.getElementById(which+'Video');
+    const facing = which==='skin' ? skinFacingMode : scanFacingMode;
+    try {
+        if(which==='skin' && skinStream){ skinStream.getTracks().forEach(t=>t.stop()); }
+        if(which==='scan' && scanStream){ scanStream.getTracks().forEach(t=>t.stop()); }
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video:{ facingMode: facing, width:{ideal:1280}, height:{ideal:720} }, audio:false
+        });
+        videoEl.srcObject = stream;
+        if(which==='skin') skinStream=stream;
+        else scanStream=stream;
+    } catch(err){
+        alert('📷 Camera access denied or unavailable.\n\nPlease allow camera permission in your browser settings, then try again.\n\nYou can also use the Upload option instead ✨');
+        if(which==='skin') switchSkinInput('upload');
+        else switchScanInput('upload');
+    }
+}
+
+function stopCamera(which){
+    const s = which==='skin' ? skinStream : scanStream;
+    if(s) s.getTracks().forEach(t=>t.stop());
+    if(which==='skin'){ skinStream=null; document.getElementById('skinCameraBox').classList.remove('show'); document.getElementById('skinToggleCamera').classList.remove('active'); document.getElementById('skinToggleUpload').classList.add('active'); document.getElementById('skinUploadSection').style.display='block'; }
+    else { scanStream=null; document.getElementById('scanCameraBox').classList.remove('show'); document.getElementById('scanToggleCamera').classList.remove('active'); document.getElementById('scanToggleUpload').classList.add('active'); document.getElementById('scanUploadSection').style.display='block'; }
+}
+
+function switchCamera(which){
+    if(which==='skin'){
+        skinFacingMode = skinFacingMode==='user'?'environment':'user';
+        startCamera('skin');
+    } else {
+        scanFacingMode = scanFacingMode==='environment'?'user':'environment';
+        startCamera('scan');
+    }
+}
+
+function captureFromVideo(videoId, canvasId){
+    const video = document.getElementById(videoId);
+    const canvas = document.getElementById(canvasId);
+    canvas.width = video.videoWidth||400;
+    canvas.height = video.videoHeight||300;
+    const ctx = canvas.getContext('2d');
+    if(skinFacingMode==='user' && videoId==='skinVideo'){
+        ctx.translate(canvas.width,0); ctx.scale(-1,1);
+    }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL('image/jpeg', 0.92);
+}
+
+function captureSkinPhoto(){
+    const dataUrl = captureFromVideo('skinVideo','skinCanvas');
+    skinFileData = dataUrl;
+    document.getElementById('skinPreviewImg').src = dataUrl;
+    document.getElementById('skinFileName').textContent = '📎 camera_selfie.jpg';
+    document.getElementById('skinPreviewBox').classList.add('show');
+    document.getElementById('skinResult').classList.remove('show');
+    stopCamera('skin');
+}
+
+function captureScanPhoto(){
+    const dataUrl = captureFromVideo('scanVideo','scanCanvas');
+    scanFileData = dataUrl;
+    document.getElementById('scanPreviewImg').src = dataUrl;
+    document.getElementById('scanFileName').textContent = '📎 camera_product.jpg';
+    document.getElementById('scanPreviewBox').classList.add('show');
+    document.getElementById('scanResult').classList.remove('show');
+    stopCamera('scan');
+}
+
+/* ══════════════════════════════════════
+   SKIN / SCAN FILE UPLOAD
+══════════════════════════════════════ */
+let skinFileData = null;
+let scanFileData = null;
+
+function onSkinFile(e){
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        skinFileData=ev.target.result;
+        document.getElementById('skinPreviewImg').src=skinFileData;
+        document.getElementById('skinFileName').textContent='📎 '+file.name;
+        document.getElementById('skinPreviewBox').classList.add('show');
+        document.getElementById('skinResult').classList.remove('show');
+        document.getElementById('skinLoadingState').classList.remove('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+function onScanFile(e){
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        scanFileData=ev.target.result;
+        document.getElementById('scanPreviewImg').src=scanFileData;
+        document.getElementById('scanFileName').textContent='📎 '+file.name;
+        document.getElementById('scanPreviewBox').classList.add('show');
+        document.getElementById('scanResult').classList.remove('show');
+        document.getElementById('scanLoadingState').classList.remove('show');
+    };
+    reader.readAsDataURL(file);
+}
+
+// Drag & drop
+['skinUploadSection','scanUploadSection'].forEach((secId,idx)=>{
+    const zone = document.getElementById(secId)?.querySelector('.uploadZone');
+    if(!zone) return;
+    zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+    zone.addEventListener('drop',e=>{
+        e.preventDefault();zone.classList.remove('drag');
+        const file=e.dataTransfer.files[0];
+        if(file&&file.type.startsWith('image/')){
+            const inp=document.getElementById(idx===0?'skinFileInput':'scanFileInput');
+            const dt=new DataTransfer();dt.items.add(file);inp.files=dt.files;
+            inp.dispatchEvent(new Event('change'));
+        }
+    });
+});
+
+/* ══════════════════════════════════════
+   CLAUDE API
+══════════════════════════════════════ */
+async function callClaude(prompt, imageBase64){
+    const mediaType=imageBase64.split(';')[0].split(':')[1];
+    const base64Data=imageBase64.split(',')[1];
+    const response=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            model:"claude-sonnet-4-20250514",
+            max_tokens:1000,
+            messages:[{role:"user",content:[
+                {type:"image",source:{type:"base64",media_type:mediaType,data:base64Data}},
+                {type:"text",text:prompt}
+            ]}]
+        })
+    });
+    const data=await response.json();
+    if(data.error)throw new Error(data.error.message);
+    return data.content[0].text;
+}
+
+/* ══════════════════════════════════════
+   SKIN ANALYSER — AI CALL
+══════════════════════════════════════ */
+async function analyseSkin(){
+    if(!skinFileData){alert('Please upload or capture a photo first ✨');return;}
+    const btn=document.getElementById('skinAnalyzeBtn');
+    btn.classList.add('loading');
+    document.getElementById('skinScanOverlay').classList.add('active');
+    document.getElementById('skinLoadingState').classList.add('show');
+    document.getElementById('skinResult').classList.remove('show');
+
+    const prompt=`You are an expert dermatologist AI. Analyse this face photo and respond ONLY with a valid JSON object (no markdown, no extra text). The JSON must have exactly this structure:
+{
+  "skinType": "Oily" | "Dry" | "Combination" | "Normal" | "Sensitive",
+  "skinTypeIcon": "🌟",
+  "skinTypeColor": "#hex",
+  "skinTypeDesc": "2-sentence description",
+  "faceShape": "Oval" | "Round" | "Square" | "Heart" | "Diamond" | "Oblong",
+  "faceShapeDesc": "Brief explanation of what this face shape means for the person",
+  "overallScore": 75,
+  "ratingWord": "Good" | "Excellent" | "Fair" | "Poor" | "Great",
+  "metrics": [
+    {"label":"Hydration","value":70,"color":"#2980B9"},
+    {"label":"Oiliness","value":60,"color":"#E67E22"},
+    {"label":"Pore Size","value":45,"color":"#8E44AD"},
+    {"label":"Radiance","value":80,"color":"#F39C12"},
+    {"label":"Texture","value":75,"color":"#27AE60"},
+    {"label":"Sensitivity","value":30,"color":"#E74C3C"}
+  ],
+  "tips": [
+    {"icon":"💧","text":"tip 1"},
+    {"icon":"🌿","text":"tip 2"},
+    {"icon":"☀️","text":"tip 3"},
+    {"icon":"🧴","text":"tip 4"}
+  ],
+  "recommendedProducts": [
+    {"icon":"🧴","name":"Hyaluronic Serum","brand":"Minimalist"},
+    {"icon":"☀️","name":"SPF 50 Sunscreen","brand":"Re'equil"},
+    {"icon":"🧼","name":"Gentle Cleanser","brand":"Cetaphil"},
+    {"icon":"💊","name":"Niacinamide 10%","brand":"The Ordinary"},
+    {"icon":"🌙","name":"Night Cream","brand":"Neutrogena"},
+    {"icon":"💆","name":"Clay Mask","brand":"Mamaearth"}
+  ]
+}
+Base all scores on visual cues. The skinType must be one of: Oily, Dry, Combination, Normal, Sensitive. The faceShape must be one of: Oval, Round, Square, Heart, Diamond, Oblong. Respond ONLY with JSON.`;
+
+    try{
+        const raw=await callClaude(prompt,skinFileData);
+        let json;
+        try{json=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{throw new Error('Could not parse AI response. Please try again.');}
+        renderSkinResult(json);
+    }catch(err){alert('Analysis failed: '+err.message);}
+    finally{
+        btn.classList.remove('loading');
+        document.getElementById('skinScanOverlay').classList.remove('active');
+        document.getElementById('skinLoadingState').classList.remove('show');
+    }
+}
+
+function renderSkinResult(d){
+    const badge=document.getElementById('skinTypeBadge');
+    badge.style.background=`linear-gradient(135deg,${d.skinTypeColor},${d.skinTypeColor}88)`;
+    badge.querySelector('.sIcon').textContent=d.skinTypeIcon||'💧';
+    document.getElementById('skinTypeLabel').textContent=d.skinType;
+    document.getElementById('skinTypeTitle').textContent=d.skinType+' Skin';
+    document.getElementById('skinTypeDesc').textContent=d.skinTypeDesc;
+
+    // Face shape
+    if(d.faceShape){
+        const fsb=document.getElementById('faceShapeBadge');
+        const shapeIcons={Oval:'🥚',Round:'⭕',Square:'⬜',Heart:'💗',Diamond:'💎',Oblong:'🔷'};
+        document.getElementById('faceShapeText').textContent=d.faceShape+' Face — '+d.faceShapeDesc;
+        fsb.querySelector('.fsIcon').textContent=shapeIcons[d.faceShape]||'🔷';
+        fsb.style.display='inline-flex';
+    }
+
+    document.getElementById('overallScore').textContent=d.overallScore;
+    document.getElementById('ratingWord').textContent=d.ratingWord+' — ';
+    const stars=Math.round((d.overallScore/100)*5);
+    document.getElementById('starRow').innerHTML=[1,2,3,4,5].map(i=>`<span class="star ${i<=stars?'filled':''}">★</span>`).join('');
+
+    document.getElementById('metricsGrid').innerHTML=(d.metrics||[]).map(m=>`
+        <div class="metricCard">
+            <div class="metricLabel">${m.label}</div>
+            <div class="metricBarWrap"><div class="metricBar" data-w="${m.value}" style="background:linear-gradient(90deg,${m.color}88,${m.color})"></div></div>
+            <div class="metricVal" style="color:${m.color}">${m.value}%</div>
+        </div>`).join('');
+    setTimeout(()=>{document.querySelectorAll('.metricBar').forEach(b=>{b.style.width=b.dataset.w+'%';});},100);
+
+    document.getElementById('tipsList').innerHTML=(d.tips||[]).map(t=>`<div class="tipItem"><span class="tipIco">${t.icon}</span>${t.text}</div>`).join('');
+    document.getElementById('prodsGrid').innerHTML=(d.recommendedProducts||[]).map(p=>`<div class="prodCard"><div class="pIcon">${p.icon}</div><div class="pName">${p.name}</div><div class="pBrand">${p.brand}</div></div>`).join('');
+
+    document.getElementById('skinResult').classList.add('show');
+    document.getElementById('skinResult').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ══════════════════════════════════════
+   PRODUCT SCANNER — AI CALL
+══════════════════════════════════════ */
+async function scanProduct(){
+    if(!scanFileData){alert('Please upload or capture a product image first ✨');return;}
+    const btn=document.getElementById('scanAnalyzeBtn');
+    btn.classList.add('loading');
+    document.getElementById('scanScanOverlay').classList.add('active');
+    document.getElementById('scanLoadingState').classList.add('show');
+    document.getElementById('scanResult').classList.remove('show');
+
+    const prompt=`You are an expert product analyst AI. Analyse this product image and respond ONLY with a valid JSON object (no markdown, no extra text):
+{
+  "productName":"Full product name",
+  "brand":"Brand name",
+  "productEmoji":"🧴",
+  "category":"Skincare / Food / Electronics / etc",
+  "safetyStatus":"Safe"|"Caution"|"Unsafe",
+  "safetyLevel":"safe"|"warn"|"danger",
+  "details":[
+    {"label":"Category","value":"Skincare Serum","sub":"Face care"},
+    {"label":"Net Weight","value":"30ml","sub":"Standard size"},
+    {"label":"Price Range","value":"₹400-800","sub":"Estimated"},
+    {"label":"Shelf Life","value":"24 months","sub":"After opening: 12M"},
+    {"label":"For Skin Type","value":"All skin types","sub":"Dermatologist tested"},
+    {"label":"Key Benefit","value":"Hydration & Glow","sub":"Primary claim"}
+  ],
+  "ingredients":[
+    {"name":"Aqua","status":"safe"},
+    {"name":"Hyaluronic Acid","status":"safe"},
+    {"name":"Niacinamide","status":"safe"},
+    {"name":"Fragrance","status":"warn"},
+    {"name":"Parabens","status":"bad"}
+  ],
+  "aiSummary":"2-3 sentence expert summary"
+}
+Respond ONLY with JSON, nothing else.`;
+
+    try{
+        const raw=await callClaude(prompt,scanFileData);
+        let json;
+        try{json=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{throw new Error('Could not parse AI response. Please try again.');}
+        renderScanResult(json);
+    }catch(err){alert('Scan failed: '+err.message);}
+    finally{
+        btn.classList.remove('loading');
+        document.getElementById('scanScanOverlay').classList.remove('active');
+        document.getElementById('scanLoadingState').classList.remove('show');
+    }
+}
+
+function renderScanResult(d){
+    document.getElementById('scanResultIcon').textContent=d.productEmoji||'📦';
+    document.getElementById('scanProductName').textContent=d.productName;
+    document.getElementById('scanProductBrand').textContent=`${d.brand} · ${d.category}`;
+    const sb=document.getElementById('scanSafetyBadge');
+    sb.textContent=d.safetyStatus==='Safe'?'✓ Safe to Use':d.safetyStatus==='Caution'?'⚠ Use with Caution':'✕ Not Recommended';
+    sb.className='scanBadge '+(d.safetyLevel==='warn'?'warn':d.safetyLevel==='danger'?'danger':'');
+    document.getElementById('detailsGrid').innerHTML=(d.details||[]).map(det=>`<div class="detailCard"><div class="dLabel">${det.label}</div><div class="dVal">${det.value}</div><div class="dSub">${det.sub||''}</div></div>`).join('');
+    const sm={safe:{cls:'safe',icon:'✓'},warn:{cls:'warn',icon:'⚠'},bad:{cls:'bad',icon:'✕'}};
+    document.getElementById('ingrList').innerHTML=(d.ingredients||[]).map(i=>{const s=sm[i.status]||sm.safe;return`<span class="ingrChip ${s.cls}">${s.icon} ${i.name}</span>`;}).join('');
+    document.getElementById('aiSummary').innerHTML=`<strong>🤖 AI Expert Summary:</strong><br>${d.aiSummary}`;
+    document.getElementById('scanResult').classList.add('show');
+    document.getElementById('scanResult').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ══════════════════════════════════════
+   LOGIN / LOGOUT
+══════════════════════════════════════ */
+let currentUser=null;
+function showErr(msg){const el=document.getElementById('errBox');el.textContent=msg;el.classList.add('vis');document.getElementById('okBox').classList.remove('vis');setTimeout(()=>el.classList.remove('vis'),4500);}
+function showOk(msg){const el=document.getElementById('okBox');el.textContent=msg;el.classList.add('vis');document.getElementById('errBox').classList.remove('vis');}
+function doLogin(){
+    const email=(document.getElementById('inEmail').value||'').trim();
+    const pass=(document.getElementById('inPass').value||'');
+    let valid=true;
+    if(!email||!email.includes('@')){document.getElementById('inEmail').classList.add('bad');valid=false;}else{document.getElementById('inEmail').classList.remove('bad');}
+    if(!pass){document.getElementById('inPass').classList.add('bad');valid=false;}else{document.getElementById('inPass').classList.remove('bad');}
+    if(!valid){showErr('Please fill in all fields ✨');return;}
+    if(pass!=='123456'){document.getElementById('inPass').classList.add('bad');showErr('Incorrect password — hint: 123456 ✨');return;}
+    const btn=document.getElementById('loginBtn');btn.classList.add('loading');showOk('✨ Authenticated! Entering your magical workspace…');
+    setTimeout(()=>{btn.classList.remove('loading');const name=email.split('@')[0];currentUser={email,name};if(document.getElementById('rememberMe').checked){localStorage.setItem('bc_user',JSON.stringify(currentUser));}enterApp();},1300);
+}
+function enterApp(){
+    const n=currentUser.name;
+    document.getElementById('uNm').textContent=n.charAt(0).toUpperCase()+n.slice(1);
+    document.getElementById('uAv').textContent=n.charAt(0).toUpperCase();
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.add('on');
+    document.getElementById('statusBar').style.display='block';
+    document.getElementById('inspireWidget').style.display='block';
+    updateStatus();renderPortal();newInspiration();
+    setTimeout(showWelcomeConfetti,600);
+}
+function doLogout(){
+    if(!confirm('👋 Are you sure you want to logout?'))return;
+    // stop any active cameras
+    if(skinStream)skinStream.getTracks().forEach(t=>t.stop());
+    if(scanStream)scanStream.getTracks().forEach(t=>t.stop());
+    localStorage.removeItem('bc_user');currentUser=null;
+    document.getElementById('app').classList.remove('on');
+    document.getElementById('statusBar').style.display='none';
+    document.getElementById('inspireWidget').style.display='none';
+    document.getElementById('loginScreen').classList.remove('hidden');
+    document.getElementById('inEmail').value='';document.getElementById('inPass').value='';
+    document.getElementById('inEmail').classList.remove('bad');document.getElementById('inPass').classList.remove('bad');
+    document.getElementById('okBox').classList.remove('vis');document.getElementById('errBox').classList.remove('vis');
+    document.getElementById('resultBox').classList.remove('show');
+}
+function togglePwd(){const inp=document.getElementById('inPass');const ico=document.getElementById('eyeIcon');if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}else{inp.type='password';ico.className='fas fa-eye';}}
+function forgotPwd(){const e=document.getElementById('inEmail').value.trim();if(e)showOk(`✨ Reset link sent to ${e}! (demo)`);else{showErr('Enter your email first ✨');document.getElementById('inEmail').focus();}}
+function signupNote(){alert('🌟 Sign up coming soon!\nFor now use any email + password "123456" ✨');}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!document.getElementById('loginScreen').classList.contains('hidden'))doLogin();});
+const saved=JSON.parse(localStorage.getItem('bc_user')||'null');
+if(saved){currentUser=saved;enterApp();}
+
+/* ══════════════════════════════════════
+   OAUTH
+══════════════════════════════════════ */
+const OAUTH_CONFIG={
+    google:{title:'Sign in with Google',sub:'Choose a Google Account to continue to BrandCraft',icon:'<svg width="40" height="40" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',btnColor:'linear-gradient(135deg,#EA4335,#FBBC05)',accounts:[{name:'Alex Johnson',email:'alex.johnson@gmail.com',avatar:'AJ',color:'#EA4335'},{name:'My Personal Account',email:'mypersonal@gmail.com',avatar:'MP',color:'#4285F4'}],oauthUrl:'https://accounts.google.com/o/oauth2/v2/auth?client_id=DEMO&response_type=token&scope=email%20profile&redirect_uri='+encodeURIComponent(window.location.href)},
+    apple:{title:'Sign in with Apple',sub:'Use your Apple ID to sign in to BrandCraft',icon:'<svg width="40" height="40" viewBox="0 0 814 1000"><path fill="#1a1a1a" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.8 0 663.8 0 542.8c0-193.3 126.4-295.5 250.8-295.5 66.1 0 121.2 43.4 162.7 43.4 39.5 0 101.1-46 176.3-46 28.5 0 130.9 2.6 198.3 99.2zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/></svg>',btnColor:'linear-gradient(135deg,#1a1a1a,#555)',accounts:[{name:'Your iPhone',email:'••••••@icloud.com',avatar:'📱',color:'#555',isEmoji:true},{name:'Your Mac',email:'appleid@icloud.com',avatar:'💻',color:'#333',isEmoji:true}],oauthUrl:'https://appleid.apple.com/auth/authorize?client_id=DEMO&response_type=code&scope=name%20email&redirect_uri='+encodeURIComponent(window.location.href)},
+    facebook:{title:'Continue with Facebook',sub:'Log in with your Facebook account to BrandCraft',icon:'<svg width="40" height="40" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',btnColor:'linear-gradient(135deg,#1877F2,#0C4A9B)',accounts:[{name:'Your Facebook Profile',email:'facebook@fb.com',avatar:'FB',color:'#1877F2'}],oauthUrl:'https://www.facebook.com/dialog/oauth?client_id=DEMO&response_type=token&scope=email&redirect_uri='+encodeURIComponent(window.location.href)}
+};
+let currentOAuthProvider=null;
+function oauthLogin(provider){
+    currentOAuthProvider=provider;const cfg=OAUTH_CONFIG[provider];
+    document.getElementById('oauthProviderIcon').innerHTML=cfg.icon;
+    document.getElementById('oauthTitle').textContent=cfg.title;
+    document.getElementById('oauthSub').textContent=cfg.sub;
+    document.getElementById('oauthEmail').value='';
+    document.getElementById('oauthContinueBtn').style.background=cfg.btnColor;
+    document.getElementById('oauthAccountList').innerHTML=cfg.accounts.map((acc,i)=>`<div class="oauthAccount" onclick="oauthSelectAccount(${i})"><div class="oauthAvatar" style="background:${acc.color};${acc.isEmoji?'font-size:20px':''}">${acc.avatar}</div><div class="oauthInfo"><strong>${acc.name}</strong><span>${acc.email}</span></div><i class="fas fa-chevron-right oauthArrow"></i></div>`).join('');
+    openModal('mOAuth');
+}
+function oauthSelectAccount(idx){
+    const cfg=OAUTH_CONFIG[currentOAuthProvider];const acc=cfg.accounts[idx];
+    closeModal('mOAuth');
+    const popup=window.open(cfg.oauthUrl,'oauth_popup','width=500,height=620');
+    showOk(`✨ Connecting to ${currentOAuthProvider}…`);
+    setTimeout(()=>{try{if(popup&&!popup.closed)popup.close();}catch(e){}currentUser={email:acc.email.includes('•')?`user@${currentOAuthProvider}.com`:acc.email,name:acc.name.split(' ')[0]};localStorage.setItem('bc_user',JSON.stringify(currentUser));enterApp();},1800);
+}
+function oauthContinue(){
+    const email=document.getElementById('oauthEmail').value.trim();
+    if(!email||!email.includes('@')){document.getElementById('oauthEmail').style.borderColor='#FC8181';document.getElementById('oauthEmail').focus();return;}
+    const cfg=OAUTH_CONFIG[currentOAuthProvider];closeModal('mOAuth');
+    window.open(cfg.oauthUrl+'&login_hint='+encodeURIComponent(email),'oauth_popup','width=500,height=620');
+    showOk(`✨ Opening ${currentOAuthProvider} sign-in…`);
+    setTimeout(()=>{currentUser={email,name:email.split('@')[0]};localStorage.setItem('bc_user',JSON.stringify(currentUser));enterApp();},2000);
+}
+
+/* ══════════════════════════════════════
+   EXTRAS: CURSOR, CONFETTI, HOROSCOPE, INSPIRE
+══════════════════════════════════════ */
+let lastTrailTime=0;
+document.addEventListener('mousemove',e=>{
+    const now=Date.now();if(now-lastTrailTime<60)return;lastTrailTime=now;
+    const dot=document.createElement('div');dot.className='cursorSparkle';
+    dot.style.left=(e.clientX-4)+'px';dot.style.top=(e.clientY-4)+'px';
+    const colors=['#FFD700','#c39bd3','#9B59B6','#FF6B9D','#7FB3D3'];
+    dot.style.background=colors[Math.floor(Math.random()*colors.length)];
+    const s=5+Math.random()*8;dot.style.width=dot.style.height=s+'px';
+    document.body.appendChild(dot);setTimeout(()=>dot.remove(),700);
+});
+
+function showWelcomeConfetti(){launchConfetti(60);}
+function launchConfetti(count=80){
+    const colors=['#FFD700','#c39bd3','#9B59B6','#FF6B9D','#7FB3D3','#76C893','#F0A265','#F48FB1'];
+    for(let i=0;i<count;i++){setTimeout(()=>{const p=document.createElement('div');p.className='confettiPiece';p.style.left=Math.random()*100+'vw';p.style.top='-20px';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.width=(6+Math.random()*10)+'px';p.style.height=(6+Math.random()*10)+'px';p.style.borderRadius=Math.random()>.5?'50%':'2px';p.style.animationDuration=(1.5+Math.random()*2)+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),3500);},i*25);}
+}
+
+// 3D tilt login card
+const lcard=document.querySelector('.lcard');
+if(lcard){
+    lcard.addEventListener('mousemove',e=>{const r=lcard.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;lcard.style.transform=`perspective(900px) rotateY(${x*12}deg) rotateX(${-y*10}deg) scale(1.02)`;});
+    lcard.addEventListener('mouseleave',()=>{lcard.style.transform='perspective(900px) rotateY(0) rotateX(0) scale(1)';});
+}
+
+// Horoscope easter egg
+let logoClicks=0;
+const horoscopes=['🔮 Your brand energy today is UNSTOPPABLE. Launch boldly.','✨ Soft pastels are calling your name today.','🌟 Bold geometry will make you unforgettable this week.','🌙 Mystery is your brand superpower today.','🌿 Nature-inspired branding will resonate deeply.','💎 Luxury vibes incoming. Your brand deserves gold.','🚀 Tech-forward energy! Minimalism carries you higher.','🎨 Playful colors are your magic today!'];
+document.getElementById('genLogoBoxBtn')?.addEventListener('click',()=>{
+    logoClicks++;
+    if(logoClicks>=5){
+        logoClicks=0;const h=horoscopes[Math.floor(Math.random()*horoscopes.length)];
+        const toast=document.getElementById('horoscopeToast');
+        toast.innerHTML='<div style="font-size:13px;opacity:.8;margin-bottom:4px">🔮 Brand Horoscope</div>'+h;
+        toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),4500);
+    }
+});
+
+// Inspiration widget
+const inspirations=['"Your brand is what people say about you when you\'re not in the room."','"Design is not just what it looks like. Design is how it works."','"A brand is the set of expectations, memories, stories and relationships."','"Make it simple. Make it memorable. Make it inviting to look at."','"Your brand story is the most powerful marketing tool you own."','"Creativity is intelligence having fun."','"The best brands feel like old friends from the first meeting."','"Color is the silent salesperson of your brand." 🎨','"Logos don\'t sell — stories do." ✨'];
+function newInspiration(){
+    const el=document.getElementById('inspireText');if(!el)return;
+    el.style.opacity='0';
+    setTimeout(()=>{el.textContent=inspirations[Math.floor(Math.random()*inspirations.length)];el.style.transition='opacity .4s';el.style.opacity='1';},300);
+}
+
+// Palette preview
+function updatePalettePreview(){
+    const val=document.getElementById('fColor').value;const style=document.getElementById('fStyle').value;
+    const colors=getColors(val==='auto'?null:val,style);const prev=document.getElementById('palettePrev');if(!prev)return;
+    prev.innerHTML=colors.map((c,i)=>`<div class="paletteDot" style="background:${c};animation-delay:${i*.1}s" title="${c}"></div>`).join('');
+}
+</script>
+</body>
+</html>
